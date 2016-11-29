@@ -13,6 +13,8 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import IsAuthenticated
+
 # Create your views here.
 from models import * 
 from carro.models import Carro,LineaCarro
@@ -20,6 +22,7 @@ from pedido.models import Pedido
 
 class PedidoViewSet(viewsets.ModelViewSet):
 	serializer_class = PedidoSerializer
+	permission_classes = (IsAuthenticated,)
 
 	def get_queryset(self):
 		if self.request.user.is_authenticated:
