@@ -44,6 +44,18 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'paypal.standard.ipn',
     'corsheaders',
+    #mis apps
+    'carro',
+    'catalogo',
+    'cliente',
+    'contabilidad',
+    'cmsweb',
+    'material',
+    'oficina',
+    'pedido',
+    'pago',
+    'ubigeo',
+    'utiles',
 )
 
 MIDDLEWARE_CLASSES = (
