@@ -1,0 +1,105 @@
+.catalogo
+	//nuevo
+	.titulo
+		display inline-block
+		font-size 24px
+		small
+			display block
+			font-size 0.5em
+	.refinar
+		font-weight bold
+		width 200px
+		background #111
+		color #fff
+		letter-spacing 2px
+		z-index 2
+	.catalogo_num_refino
+		margin 25px 0 0
+		.num_articulo
+			font-style italic
+			font-family georgia
+		.dropdown-menu
+			right 0
+			left inherit		
+	.section-refinamiento
+		position: fixed;
+		height: 100%;
+		top: 60px;
+		left: 0;
+		border: 1px solid #ddd;
+		z-index: 100;
+		background: #fff;
+		width: 300px;
+		transform translatex(-300px)
+		transition: all 1s ease;
+		&.activate
+			transform translatex(0px)
+			.fondo_refinamiento
+				display block
+		.refinar
+			transform: rotate(-90deg);
+			position absolute
+			top 40%
+			right -118px
+			&:hover
+				background #468847
+				border-color #3d773e
+		.fondo_refinamiento
+			display none
+			background: rgba(0,0,0,0.5);
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 299px;
+			z-index: 1;
+			transition: all 1s ease;
+		.bloque
+			margin 10px
+			border-bottom 1px solid #ddd
+			.titulo_bloque
+				h2
+					font-size 1.4em
+			.cuerpo_bloque
+				ul
+					padding 0px	
+					li
+						list-style none
+						cursor pointer
+						&:hover
+							font-style italic
+					.refinado_link
+						background #333
+						color #fff
+						border-radius 10px
+						padding 1px 10px
+			&.categoria
+				a
+					display inline-block
+					width 100%
+					padding 0 10px 
+					&:hover
+						background #f4f4f4
+			&.colores
+				ul
+					li
+						width 49%
+						display inline-block
+						.color-html
+							border 1px solid #ddd
+							width 15px
+							height 15px
+							border-radius 15px
+							border: 1px solid #ddd;
+							display: inline-block;
+							margin-right: 10px;
+			&.tallas
+				li
+					width: 80px;
+					display: inline-block;
+					text-align: center;
+					margin: 5px;
+					border: 1px solid #ddd;
+					&:hover
+						background #111
+						color #fff
