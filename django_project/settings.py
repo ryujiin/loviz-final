@@ -25,8 +25,6 @@ SECRET_KEY = config.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = ['*']
 
 
@@ -39,10 +37,18 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #terceros
+    'rest_framework',
+    'rest_framework.authtoken',
+    'sorl.thumbnail',
+    'social.apps.django_app.default',
+    'paypal.standard.ipn',
+    'corsheaders',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -116,6 +122,22 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     location('staticos'),
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+}
+
+#Paypal IPN
+PAYPAL_RECEIVER_EMAIL = "lovizempresa@gmail.com"
+PAYPAL_TEST = True
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 try:
     from .local import *
