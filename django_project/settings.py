@@ -93,6 +93,8 @@ DATABASES = {
 
 LANGUAGE_CODE = 'es-mx'
 
+TIME_ZONE = 'America/Lima'
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -105,4 +107,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
+MEDIA_ROOT = location("public/media")
+MEDIA_URL = '/media/'
+
+STATIC_ROOT = location('public/static')
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    location('staticos'),
+)
+
+try:
+    from .local import *
+except ImportError:
+    pass
