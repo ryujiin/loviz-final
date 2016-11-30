@@ -36,7 +36,7 @@ define([
             });
         },
         addTalla:function (modelo) {
-            modelo.set({filtro:'talla'});
+            modelo.set({filtro:'variaciones.talla'});
             var vista = new CateLink({model:modelo});
             this.$('ul').append(vista.render().el);
         },

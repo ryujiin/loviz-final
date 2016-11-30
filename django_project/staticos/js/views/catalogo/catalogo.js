@@ -35,7 +35,6 @@ define([
             modelo.set({visible:true});
             var producto = new ProductoLista({model:modelo});
             this.$el.append(producto.$el);
-            //producto.$el.addClass('col-md-3 col-sm-6 col-xs-6')
         },
         buscar:function (slug) {
             var loader = new AjaxLoaderView();
@@ -49,7 +48,11 @@ define([
             })
         },
         productos_filtrar:function () {
-            this.collection.forEach(this.filtrar,this);
+            if (this.collection.length===0) {
+                Facetas(this.productos).clearValues();
+            }else{
+                this.collection.forEach(this.filtrar,this);    
+            }
             if (this.sort.modo === 'asc') {
                 Facetas(this.productos).sortBy(this.sort.ordenar).asc();
             }else if(this.sort.modo === 'desc'){

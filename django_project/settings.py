@@ -145,6 +145,13 @@ REST_FRAMEWORK = {
     ),
 }
 
+AUTHENTICATION_BACKENDS = (
+    'social.backends.facebook.Facebook2AppOAuth2',
+    'social.backends.facebook.Facebook2OAuth2',
+    'cliente.backends.EmailOrUsernameModelBackend',    
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 #Paypal IPN
 PAYPAL_RECEIVER_EMAIL = "lovizempresa@gmail.com"
 PAYPAL_TEST = True

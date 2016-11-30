@@ -29,7 +29,9 @@ define([
         collection: new CategoriaCollection(),
 
         events: {
-            'click .sort_by li':'catalogo_sort_by'
+            'click .sort_by li':'catalogo_sort_by',
+            'click .refinar':'mostrar_refino',
+            'click .modo_lista .no-activo':'modificar_vista',
         },
 
         initialize: function () {
@@ -108,13 +110,26 @@ define([
                 el:this.$('.section-refinamiento'),
                 collection:this.filtros,
                 model:this.model,
-            }).render(this.collection)
+            })
+            this.refinamiento.render(this.collection)
         },
         catalogo_sort_by:function (e) {
             var ordenar = e.target.dataset.sortby;
             var modo = e.target.dataset.modo;
             this.catalogo.sort_by(ordenar,modo);
             this.num_catalogo_model.set({'sortby':e.target.innerText});
+        },
+        mostrar_refino:function () {
+            this.refinamiento.mostrar_cuadro()
+        },
+        modificar_vista:function (e) {
+            this.$('.modo_lista button').removeClass('no-activo activo').addClass('no-activo');
+            this.$(e.currentTarget).removeClass('.no-activo').addClass('activo');
+            if (e.currentTarget.dataset.lista=='si') {
+                this.$('.lista-productos').addClass('lista-uno');
+            }else{
+                this.$('.lista-productos').removeClass('lista-uno');                
+            }
         }
     });
 

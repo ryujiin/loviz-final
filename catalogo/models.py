@@ -32,7 +32,6 @@ class Producto(models.Model):
 		self.full_name = "%s (%s)" %(self.nombre,self.color)
 		if not self.slug:
 			self.slug = slugify(self.full_name)
-		self.guardar_oferta()	
 		super(Producto, self).save(*args, **kwargs)
 
 	def get_thum(self):
@@ -42,6 +41,7 @@ class Producto(models.Model):
 
 	def guardar_oferta(self):
 		oferta = self.get_en_oferta()
+		print oferta
 		if oferta>0:
 			self.en_oferta = True
 		else:
@@ -59,7 +59,8 @@ class Producto(models.Model):
 		variaciones = self.get_variaciones()
 		if variaciones:
 			return variaciones[0].oferta
-		return 0
+		else:
+			return 0
 
 	def get_variaciones(self):
 		variaciones = ProductoVariacion.objects.filter(producto=self).order_by('-oferta')
@@ -148,6 +149,9 @@ class ProductoVariacion(models.Model):
 		if self.oferta and not self.precio_oferta:
 			self.precio_oferta = self.precio_minorista*(100-self.oferta)/100
 		super(ProductoVariacion, self).save(*args, **kwargs)
+		if self.oferta>0:
+			self.producto.en_oferta = True
+			self.producto.save()
 
 def url_imagen_pr(self,filename):
 	url = "productos/imagen/%s/%s" % (self.producto.pk, filename)

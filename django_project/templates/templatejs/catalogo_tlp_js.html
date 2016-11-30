@@ -6,10 +6,11 @@
 		<img src="{{imagen}}">
 		{%endif%}
 	</section>
-	<div class="catalogo container-fluid">		
+	<div class="catalogo container">		
 		<div class="nav-breadcrumb">
 		</div>
 		<div class="section-refinamiento">
+			<span class="icon-cross cerrar_refino"></span>
 			<aside class="js-panel from-right">
 			    <div class="bloque categoria">
 			    </div>
@@ -37,6 +38,7 @@
 </script>
 
 <script type="text/template" id="catalogo_num_refino_tlp">
+	<div class="btn btn-link refinar">Refinar por</div>
 	<span class="num_articulo">{{numero}} Articulo(s) |</span>
 	<div class="btn-group sort_by" role="group">
 		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -75,8 +77,13 @@
 		 </li>
 		</ul>
 	</div>
-	<div class="modo_lista">
-
+	<div class="modo_lista btn-group">
+		<button type="button" class="btn btn-default activo" data-lista="no">
+			<span class="glyphicon glyphicon-th-large"></span>
+		</button>
+		<button type="button" class="btn btn-default no-activo" data-lista="si">
+			<span class="glyphicon glyphicon-align-justify"></span>
+		</button>
 	</div>
 </script>
 

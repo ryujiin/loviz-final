@@ -1,4 +1,8 @@
 .breadcrumb
+	display none
+	background #fff
+	text-transform uppercase
+	margin-bottom 0px
 	font-size 0.9em
 	.last
 		color #999
@@ -50,7 +54,6 @@ h2
 		margin 5px auto
 		background #333
 		box-shadow 1px 1px 3px rgba(0,0,0,0.5)
-.breadcrumb
-	background #fff
-	text-transform uppercase
-	margin-bottom 0px
+@media (min-width: 768px)
+	.breadcrumb
+		display block

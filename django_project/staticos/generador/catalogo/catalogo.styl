@@ -8,25 +8,30 @@
 		small
 			display block
 			font-size 0.5em
-	.refinar
-		font-weight bold
-		width 200px
-		background #111
-		color #fff
-		letter-spacing 2px
-		z-index 2
 	.catalogo_num_refino
+		box-shadow 0 2px 5px rgba(0,0,0,.16)
+		display flex
+		justify-content space-between
+		align-items center
 		.num_articulo
+			display none
 			font-style italic
 			font-family georgia
 			font-size 0.8em
 		.dropdown-menu
 			right 0
 			left inherit
+		.modo_lista
+			button
+				border 1px solid #f1f1f1
+			.activo
+				background #f1f1f1
+				color #f1f1f1	
+		.sort_by
+			display none			
 	.catalogo_productos
 		margin-top 10px		
 	.section-refinamiento
-		display none
 		position: fixed;
 		height: 100%;
 		top: 60px;
@@ -41,7 +46,15 @@
 			transform translatex(0px)
 			.fondo_refinamiento
 				display block
+		.cerrar_refino
+			float: right;
+			margin: 6px;
+			border: 1px solid;
+			padding: 5px;
+			border-radius: 34px;
+			cursor pointer
 		.refinar
+			display none
 			transform: rotate(-90deg);
 			position absolute
 			top 40%
@@ -52,7 +65,7 @@
 		.fondo_refinamiento
 			display none
 			background: rgba(0,0,0,0.5);
-			width: 100%;
+			width: 1000%;
 			height: 100%;
 			position: absolute;
 			top: 0;
@@ -108,3 +121,67 @@
 					&:hover
 						background #111
 						color #fff
+@media (min-width: 768px)
+	.catalogo
+		.section-refinamiento
+			display block
+			aside
+				&.siguiendo
+					position fixed
+					width 25%
+					top 90px
+		.catalogo_num_refino
+			.sort_by
+				display block
+	.lista-productos 
+		.productos 
+			figure
+				min-height 160px
+	.carro_page
+		.btn
+			width initial!important
+		.lineas_carro
+			margin-top 10px
+			.etiqueta_mobil
+				display none
+			.etiquetas
+				display flex
+				padding 10px 0
+				border-bottom 2px solid #f4f4f4
+				span
+					font-weight 700
+					text-transform uppercase
+					font-family f_imprenta
+					letter-spacing 1px
+				.hiden
+					display none
+			.lineas_items
+				border-bottom 1px solid rgba(6, 20, 2, 0.52)
+				.linea
+					display flex
+					position relative
+					border-bottom 1px solid #f4f4f4
+					padding 20px 0
+				.img_linea
+					width 15%
+				.detalle_linea
+					padding-top 0
+					width 30%
+				.subtotal_linea
+					margin-top 15px
+					.etiqueta_mobil
+						display none
+				.acciones_linea
+					border none
+			.img_linea
+				width 15%				
+			.detalle_linea
+				width 30%
+				padding-left 60px
+			.precio_linea,.cantidad_linea
+				width 15%
+				text-align center
+			.subtotal_linea,.acciones_linea
+				width 15%			
+	.paso_pago .panel_seccion .nav.nav-tabs li
+		width initial!important

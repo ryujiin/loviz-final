@@ -19,9 +19,10 @@ define([
         className: '',
 
         events: {
-            'click .refinar':'mostrar_cuadro',
             'click .fondo_refinamiento':'ocultar_cuadro',
+            'click .cerrar_refino':'ocultar_cuadro',
             'click .link_refinamiento':'refinar_busqueda',
+            'click .refinado_link':'borrar_filtro',
         },
 
         initialize: function () {
@@ -52,6 +53,13 @@ define([
             var valor = e.currentTarget.dataset.valor;
             $(e.currentTarget).removeClass('link_refinamiento').addClass('refinado_link');
             this.collection.add({'filtro':filtro,'valor':valor});
+        },
+        borrar_filtro:function (e) {
+            var filtro = e.currentTarget.dataset.filtro;
+            var valor = e.currentTarget.dataset.valor;
+            $(e.currentTarget).removeClass('refinado_link').addClass('link_refinamiento');
+            var modelo = this.collection.findWhere({filtro:filtro,valor:valor})
+            this.collection.remove(modelo);
         }
     });
 
