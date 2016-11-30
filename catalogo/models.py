@@ -57,7 +57,9 @@ class Producto(models.Model):
 
 	def get_en_oferta(self):
 		variaciones = self.get_variaciones()
-		return variaciones[0].oferta
+		if variaciones:
+			return variaciones[0].oferta
+		return 0
 
 	def get_variaciones(self):
 		variaciones = ProductoVariacion.objects.filter(producto=self).order_by('-oferta')
