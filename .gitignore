@@ -13,6 +13,7 @@ parts
 django_project/public/media/cache/*
 django_project/public/media/productos/*
 django_project/public/media/slider/*
+django_project/public/media/bloque/*
 
 django_project/staticos/node_modules/*
 django_project/staticos/bower_components/*

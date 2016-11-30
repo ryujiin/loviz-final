@@ -35,7 +35,7 @@ define([
             modelo.set({visible:true});
             var producto = new ProductoLista({model:modelo});
             this.$el.append(producto.$el);
-            producto.$el.addClass('col-md-3 col-sm-6 col-xs-6')
+            //producto.$el.addClass('col-md-3 col-sm-6 col-xs-6')
         },
         buscar:function (slug) {
             var loader = new AjaxLoaderView();

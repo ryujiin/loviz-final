@@ -1485,6 +1485,9 @@ h2 .linea {
 #error_page .explicacion {
   font-size: 20px;
 }
+.catalogo .marco_titulo_catalogo {
+  text-align: center;
+}
 .catalogo .titulo {
   display: inline-block;
   font-size: 24px;
@@ -1501,18 +1504,20 @@ h2 .linea {
   letter-spacing: 2px;
   z-index: 2;
 }
-.catalogo .catalogo_num_refino {
-  margin: 25px 0 0;
-}
 .catalogo .catalogo_num_refino .num_articulo {
   font-style: italic;
   font-family: georgia;
+  font-size: 0.8em;
 }
 .catalogo .catalogo_num_refino .dropdown-menu {
   right: 0;
   left: inherit;
 }
+.catalogo .catalogo_productos {
+  margin-top: 10px;
+}
 .catalogo .section-refinamiento {
+  display: none;
   position: fixed;
   height: 100%;
   top: 60px;
@@ -1628,9 +1633,33 @@ h2 .linea {
   background: #111;
   color: #fff;
 }
+.lista-productos {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -o-box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
 .lista-productos .productos {
   position: relative;
+  padding: 1em;
+  background: #fff;
+  vertical-align: top;
+  width: 50%;
   text-align: center;
+}
+.lista-productos .productos:hover {
+  border: 1px solid #f4f4f4;
+  -webkit-box-shadow: 0px 0px 8px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 8px rgba(0,0,0,0.2);
+  z-index: 2;
 }
 .lista-productos .productos .nuevo {
   position: absolute;
@@ -1681,36 +1710,7 @@ h2 .linea {
 }
 .lista-productos .productos .imagen_lista {
   position: relative;
-  min-height: 250px;
-  border-top: 1px solid #ddd;
-}
-.lista-productos .productos .imagen_lista img {
-  opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  filter: alpha(opacity=0);
-  -webkit-transition: all 0.1s linear;
-  -moz-transition: all 0.1s linear;
-  -o-transition: all 0.1s linear;
-  -ms-transition: all 0.1s linear;
-  transition: all 0.1s linear;
-  bottom: 0;
-  position: absolute;
-  left: 0;
-}
-.lista-productos .productos .imagen_lista img:first-child {
-  opacity: 1;
-  -ms-filter: none;
-  filter: none;
-}
-.lista-productos .productos .imagen_lista:hover img:first-child {
-  opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  filter: alpha(opacity=0);
-}
-.lista-productos .productos .imagen_lista:hover img:last-child {
-  opacity: 1;
-  -ms-filter: none;
-  filter: none;
+  min-height: 110px;
 }
 .lista-productos .productos .nombre_productos {
   font-family: 'BenchNine', sans-serif;

@@ -1,9 +1,19 @@
 rosado = #F7727A
 
 .lista-productos
+	display flex
+	flex-wrap wrap
 	.productos
 		position relative
+		padding 1em
+		background #fff
+		vertical-align top
+		width 50%
 		text-align center
+		&:hover
+			border 1px solid #f4f4f4
+			box-shadow 0px 0px 8px rgba(0,0,0,0.2)
+			z-index 2
 		.nuevo
 			position absolute
 			z-index 9
@@ -39,21 +49,7 @@ rosado = #F7727A
 				width 100%
 		.imagen_lista
 			position relative
-			min-height 250px
-			border-top 1px solid #ddd
-			img				
-				opacity 0
-				transition all 0.1s linear
-				bottom 0				
-				position absolute								
-				left 0				
-				&:first-child
-					opacity 1
-			&:hover
-				img:first-child
-					opacity 0
-				img:last-child				
-					opacity 1		
+			min-height 110px
 		.nombre_productos
 			font-family f_imprenta
 			font-weight bold

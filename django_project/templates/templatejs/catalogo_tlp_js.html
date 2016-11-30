@@ -23,24 +23,21 @@
 			<button class="btn btn-default refinar">Refinar Busqueda</button>
 			<div class="fondo_refinamiento"></div>
 		</div>
-		<div class="row">
-			<div class="section-main search-result-wrapper col-sm-12">
-				<div class="titulo-categoria col-sm-12">
-					<div class="catalogo_num_refino pull-right">
-					</div>
-					<div class="pull-left">
-						<h1 class="titulo"><small>{{padre}}</small>{{nombre}}</h1>
-					</div>
-					<div class="clear"></div>				
-			    </div>			    
-			 	<div class="catalogo_productos lista-productos row"></div>
-			</div>
+		<div class="section-main search-result-wrapper">
+			<div class="titulo-categoria">
+				<div class="marco_titulo_catalogo">
+					<h1 class="titulo"><small>{{padre}}</small>{{nombre}}</h1>
+				</div>
+				<div class="catalogo_num_refino">
+				</div>
+			   </div>			    
+			 <div class="catalogo_productos lista-productos"></div>
 		</div>
 	</div>	
 </script>
 
 <script type="text/template" id="catalogo_num_refino_tlp">
-	<span class="num_articulo">{{numero}} Articulo(s)</span> |
+	<span class="num_articulo">{{numero}} Articulo(s) |</span>
 	<div class="btn-group sort_by" role="group">
 		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			{%if sortby%}
@@ -48,7 +45,7 @@
 			{%else%}
 			Ordenar Por :
 			{%endif%}
-			 <span class="caret"></span>
+			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 		 <li>
@@ -77,6 +74,9 @@
 		 	</a>
 		 </li>
 		</ul>
+	</div>
+	<div class="modo_lista">
+
 	</div>
 </script>
 
@@ -144,7 +144,7 @@
 		{%endif%}
 		<figure class="imagen_lista">
 			{%for img in imagenes_producto%}
-				{%if img.orden <= 1 %}
+				{%if img.orden <= 0 %}
 					<img src="{{img.imagen_medium}}">
 				{%endif%}
 			{%endfor%}
@@ -161,6 +161,16 @@
 	    </div>
 	    <div class="estrellas"></div>
 	</a>
+</script>
+
+<script id="222productosLista_tlp" type="text/template">
+	<figure class="imagen_lista">
+			{%for img in imagenes_producto%}
+				{%if img.orden <= 1 %}
+					<img src="{{img.imagen_medium}}">
+				{%endif%}
+			{%endfor%}
+		</figure>
 </script>
 
 {% endverbatim %}
