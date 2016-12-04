@@ -72,7 +72,7 @@ class ComentarioImagen(models.Model):
 	comentario = models.ForeignKey(Comentario,blank=True,null=True,related_name='fotos_coment')
 	foto = models.ImageField(upload_to='comentario',blank=True,null=True,max_length=250)    
 
-import sendgrid
+#import sendgrid
 from django.conf import settings
 
 class Suscrito(models.Model):

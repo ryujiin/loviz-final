@@ -175,7 +175,12 @@ def get_pago_contraentrega(request):
 def get_stripe_key(request):
 	return HttpResponse(json.dumps({'key':settings.STRIPE_PUBLIC_KEY}),content_type='application/json;charset=utf8')
 
+
+from django.conf import settings
+
 def definir_pago(request):
+	enviar_mail()
+
 	valor = False
 	if request.POST:
 		if request.POST['direccion']:			
@@ -186,3 +191,4 @@ def definir_pago(request):
 			except Direccion.DoesNotExist:
 				valor = False
 	return HttpResponse(json.dumps({'valor':valor}),content_type='application/json;charset=utf8')
+

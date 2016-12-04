@@ -136,7 +136,9 @@ def nuevo_usuario(request):
 										first_name=request.POST['nombre'],
 										last_name=request.POST['apellido'])
 		if user:
-			#enviar_correo()
+			email = request.POST['username']
+			nombre ="%s %s" %(request.POST['nombre'],request.POST['apellido'])
+			enviar_mail(email,nombre)
 			return HttpResponse(json.dumps({'creado':True}),
 					content_type='application/json;charset=utf8')			
 		else:
@@ -145,21 +147,29 @@ def nuevo_usuario(request):
 	else:
 		raise Http404
 
-#import sendgrid
-#from sendgrid import SendGridError, SendGridClientError, SendGridServerError
-#
-#def enviar_correo():
-	#sg = sendgrid.SendGridClient("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")
-	#message = sendgrid.Mail()
-	#message.add_to('Enrique Lopez <ryujiin22@gmail.com>')
-	#message.set_subject('Este es un ejemplo de enviar correo')
-	#message.set_html('Esto sigue siendo un ejemplo para ver si funciona o no')
-	#message.set_text('Esto sigue siendo un ejemplo para ver si funciona o no22')
-	#message.set_from('Doe John <doe@email.com>')
-	#status, msg = sg.send(message)
-	#try:
-		#sg.send(message)
-	#except SendGridClientError:
-		#print 'fallo el cliente'
-	#except SendGridServerError:
-		#print 'fallo el server'
+import sendgrid
+from sendgrid.helpers.mail import *
+
+def enviar_mail(email,nombre):
+	sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)
+	data = {
+		"personalizations": [{
+			"to": [{
+				"email": email
+			}],
+			"subject": "Las Cosas buenas siempre iran contigo, Loviz DC.",
+			"substitutions":{
+				'usuario':nombre
+			}
+		}],
+		"from": {
+			"email": "admin@lovizdc.com"
+			},
+			"content": [{
+				"type": "text/html",
+				"value": "Hello, Email!"
+		}],
+		"template_id": "f8e2270c-2b38-40da-91f0-821e5293a1ab",
+
+	}
+	response = sg.client.mail.send.post(request_body=data)
