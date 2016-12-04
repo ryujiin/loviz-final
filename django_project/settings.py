@@ -157,7 +157,7 @@ PAYPAL_RECEIVER_EMAIL = "lovizempresa@gmail.com"
 PAYPAL_TEST = True
 
 EMAIL_BACKEND = "sgbackend.SendGridBackend"
-SENDGRID_API_KEY = "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"
+SENDGRID_API_KEY = config.SENDGRID_API_KEY
 
 CORS_ORIGIN_ALLOW_ALL = True
 
