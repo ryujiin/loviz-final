@@ -28,7 +28,7 @@
 				background #f1f1f1
 				color #f1f1f1	
 		.sort_by
-			display none			
+			display none		
 	.catalogo_productos
 		margin-top 10px		
 	.section-refinamiento
@@ -123,20 +123,12 @@
 						color #fff
 @media (min-width: 768px)
 	.catalogo
-		.section-refinamiento
-			display block
+		.section-refinamiento			
 			aside
 				&.siguiendo
 					position fixed
 					width 25%
 					top 90px
-		.catalogo_num_refino
-			.sort_by
-				display block
-	.lista-productos 
-		.productos 
-			figure
-				min-height 160px
 	.carro_page
 		.btn
 			width initial!important
@@ -185,3 +177,23 @@
 				width 15%			
 	.paso_pago .panel_seccion .nav.nav-tabs li
 		width initial!important
+
+@media (min-width: 992px)
+	.catalogo
+		.section-refinamiento			
+			top 118px
+		.titulo-categoria
+			display flex
+			.marco_titulo_catalogo
+				width 20%
+			.catalogo_num_refino
+				box-shadow none
+				width 80%
+				display flex
+				justify-content flex-end
+				.num_articulo
+					display block
+				.sort_by
+					display block
+				.modo_lista
+					display none

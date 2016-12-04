@@ -41,7 +41,6 @@ class Producto(models.Model):
 
 	def guardar_oferta(self):
 		oferta = self.get_en_oferta()
-		print oferta
 		if oferta>0:
 			self.en_oferta = True
 		else:
