@@ -87,7 +87,7 @@ define([
         finalizo:function () {
             window.prerenderReady = true;
             
-        }
+        },
     });
     var page = new PageUserView({model:UserModel})
 

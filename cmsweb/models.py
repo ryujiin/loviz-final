@@ -8,6 +8,7 @@ class Pagina(models.Model):
 	activo = models.BooleanField(default=True)	
 	estilo = models.CharField(max_length=100,blank=True)
 	cuerpo = models.TextField(blank=True)
+	imagenes = models.F
 
 	def __unicode__(self):
 		return self.slug

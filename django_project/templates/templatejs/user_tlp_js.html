@@ -42,11 +42,11 @@
 					<span class="icon-facebook"></span>Ingresar con Facebook
 				</a>
 			</div>	  
-			<form>
+			<form class="login">
 				<div class="error_form"></div>
 				<div class="form-group campo_correo">
 					<label>*Correo Electronico</label>
-					<input type="text" class="form-control" data-contenedor="campo_correo"/>
+					<input type="email" class="form-control" data-contenedor="campo_correo"/>
 					<div class="error"></div>
 				</div>
 				<div class="form-group campo_pass">
@@ -54,11 +54,31 @@
 					<input type="password" class="form-control" data-contenedor="campo_pass"/>
 					<div class="error"></div>
 				</div>
-				<a href="/">¿Olvido su contraseña?</a>
+				<a href="/" class="mostrar_olvido">¿Olvido su contraseña?</a>
 				<div class="form-group form-row-button">
 					<button type="submit" value="ingresar" class="btn btn-contraste btn-default">Ingresar</button>
 				</div>
 			</form>
+			<div class="olvido_pass">
+				<div class="cerrar-modal">
+					<span class="icon-cross2"></span>
+				</div>
+				<div class="caja">
+
+					<form class="form_olvido">
+						<h4>¿Olvido Su Contraseña?</h4>
+						<p class="texto_alerta"></p>
+						<p>Proporcione el correo electrónico de su cuenta para recibir un correo electrónico para restablecer su contraseña.</p>
+						<div class="form-group correo_reset">
+							<label>*Correo</label>
+							<input type="email" class="form-control correo_reset_pass"/>
+						</div>
+						<div>
+							<button type="submit" value="enviar_reset" class="btn btn-default">Cambiar Contraseña</button>
+						</div>
+					</form>					
+				</div>
+			</div>
 		</div>
 	</div>
 </script>

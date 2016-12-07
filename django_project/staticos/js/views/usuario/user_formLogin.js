@@ -14,10 +14,13 @@ define([
         template: swig.compile($('#user_formLogin_tlp').html()),        
 
         id: '',
-        className: '',
+        className: 'login_form',
         events: {
             'blur input':'get_datos',
-            'submit form':'antes_enviar',
+            'submit form.login':'antes_enviar',
+            'click a.mostrar_olvido':'olvido_pass',
+            'click .cerrar-modal':'ocultar_olvido_pass',
+            'submit .form_olvido':'antes_reset',
         },
         initialize: function () {
             this.render();
@@ -92,6 +95,31 @@ define([
                 contenedor.removeClass('has-success has-error');
             })
         },
+        olvido_pass:function (e) {
+            e.preventDefault();
+            this.$('.olvido_pass').fadeIn();
+        },
+        ocultar_olvido_pass:function () {
+            this.$('.olvido_pass').fadeOut();            
+        },
+        antes_reset:function (e) {
+            e.preventDefault();
+            var self = this;
+            var valor = this.$('.correo_reset_pass').val();
+            if (valor) {
+                $.post("/rest-auth/password/reset/",
+                    {email: valor}
+                ).done(function (d) {
+                    self.$('.texto_alerta').addClass('bg-success text-success').append('El correo fue enviado para restaurar la contraseña');
+                    self.$('.correo_reset_pass').val('');
+                }).fail(function (d) {
+                    self.$('.texto_alerta').addClass('bg-danger text-danger').append('Ocurrio un Error al envio');
+                })
+            }else{
+                this.$('.correo_reset').addClass('has-error');
+            }
+        },
+        
     });
 
     return UserFormLoginView;

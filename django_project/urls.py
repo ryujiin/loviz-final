@@ -4,6 +4,8 @@ from django.views.static import serve
 import settings
 
 from rest_framework.routers import DefaultRouter
+from rest_framework_jwt.views import obtain_jwt_token
+
 
 from django.contrib import admin
 admin.autodiscover()
@@ -40,6 +42,8 @@ urlpatterns = [
     url(r'^ajax/crear/', nuevo_usuario, name='nuevo_usuario'),    
     url(r'^salir/$',salir,name='salir'),
     url(r'^login/$',ingresar,name='salir'),
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^api-token-auth/', obtain_jwt_token),
     #pagos
     url(r'^pago_contraentrega/',get_pago_contraentrega,name='pago_contraentrega'),    
     url(r'^definir_pago/',definir_pago,name='definir_pago'),    
@@ -48,7 +52,7 @@ urlpatterns = [
     url(r'^get_stripe_key/$',get_stripe_key,name='get_key'),    
     url(r'^pago/paypal/', paypal_paymet,name = 'pago_paypal'),    
     url(r'^hardcode/get/paypal/', include('paypal.standard.ipn.urls')),
-    url(r'^user/change_pass/', include('password_reset.urls')),
+    #Dependencia
     #Web
     url(r'^',include('cmsweb.urls')),
 

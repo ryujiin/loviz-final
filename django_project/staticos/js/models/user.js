@@ -36,15 +36,14 @@ define([
         ingresar_user:function (email,pass,vista) {
             var self = this;
             var loader = new LoaderFull();
-            $.post("/login/",
+            $.post("/rest-auth/login/",
                 {username: email,password:pass})
             .done(function(data){
                 if (data.id!==0) {
                     self.buscar_user();
-                    if (vista.model.name==='pedido') {
-                                                
+                    if (vista.model.name==='pedido') {                                                
                         vista.model.set({'paso_actual':2,'ajax':true});
-                    }else{                        
+                    }else{
                         Backbone.history.navigate('/usuario/perfil/', {trigger:true})
                     }
                 }else{
