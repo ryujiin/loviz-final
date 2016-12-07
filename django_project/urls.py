@@ -48,6 +48,7 @@ urlpatterns = [
     url(r'^get_stripe_key/$',get_stripe_key,name='get_key'),    
     url(r'^pago/paypal/', paypal_paymet,name = 'pago_paypal'),    
     url(r'^hardcode/get/paypal/', include('paypal.standard.ipn.urls')),
+    url(r'^user/change_pass/', include('password_reset.urls')),
     #Web
     url(r'^',include('cmsweb.urls')),
 

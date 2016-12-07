@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'paypal.standard.ipn',
     'corsheaders',
+    'password_reset',
     #mis apps
     'carro',
     'catalogo',

@@ -48,6 +48,12 @@
 		right 0
 		height 100%
 		top 0
+	.atencion
+		display none
+	.atencion-mobil
+		padding 10px
+		div
+			font-size 2em
 .header-mobil
 	font-family f_imprenta
 	position relative
@@ -178,7 +184,12 @@
 			&.active
 				height auto
 				padding 1em
-
+@media (min-width: 480px)
+	.header-mobil
+		a
+			.texto
+				display inline-block
+			
 @media (min-width: 992px)
 	#header
 		position absolute
@@ -199,6 +210,13 @@
 				margin 20px
 			.right-nav-btns
 				display block
+			.atencion-mobil
+				display none
+			.atencion
+				display inherit
+				margin 10px 120px 0 0
+				float right
+				font-size 1.1em
 		#navigation
 			transform none
 			position initial
@@ -213,3 +231,4 @@
 						float left
 						border-bottom none
 						line-height 66px
+			
