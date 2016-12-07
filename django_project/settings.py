@@ -162,6 +162,8 @@ SENDGRID_API_KEY = config.SENDGRID_API_KEY
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+DEFAULT_FROM_EMAIL = 'admin@lovizdc.com'
+
 try:
     from .local import *
 except ImportError:
