@@ -30,7 +30,7 @@ class LineaSerializer(serializers.ModelSerializer):
 		return obj.get_genero()
 
 	def get_precio(self,obj):
-		precio = obj.variacion.get_precio_venta()
+		precio = obj.variacion.get_precio()
 		return "%0.2f" %(precio)
 
 	def get_subtotal(self,obj):

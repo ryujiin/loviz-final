@@ -7,67 +7,12 @@
 		</section>
 		<div class="row">
 			<div class="orden_resumen">
-				<table class="table">
-					<thead>
-						<tr>
-							<th colspan="2">Resumen de Orden</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td colspan="2"><span>1</span> Articulo(s) en el Carrito</td>
-						</tr>
-						<tr>
-							<td>Costo de Envio (Envio Estandar)</td>
-							<td>Gratis</td>
-						</tr>
-						<tr>
-							<td>SubTotal</td>
-							<td>S/. 20.00</td>
-						</tr>
-					</tbody>
-				</table>
-				<a class="btn btn-especial btn-default link" href="/procesar-compra/">Ir a la Caja</a>
 			</div>
 			<div class="todas_lineas_carro col-md-9">
 				<strong>Producto Detalles</strong>
 				<div class="lineas_carro"></div>
 			</div>
 			<div class="resumen_carro col-md-3">
-				<div class="marco_resumen">
-					<table class="table">
-						<thead>
-							<tr>
-								<th colspan="2" class="titulo_resumen">Resumen de Orden</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td colspan="2"><span>1</span> Articulo(s) en el Carrito</td>
-							</tr>
-							<tr>
-								<td >Costo de Envio (Envio Estandar)</td>
-								<td width="80">Gratis</td>
-							</tr>
-							<tr>
-								<td><strong>SubTotal</strong></td>
-								<td><strong>S/. 20.00</strong></td>
-							</tr>
-						</tbody>
-					</table>
-					<a class="btn btn-especial btn-default btn-block link" href="/procesar-compra/">
-						Procesar Compra
-						<span class="icon-chevron-small-right"></span>
-					</a>
-					<div class="text-center texto_envio">
-						¡Tu pedido califica para envio gratuito!
-					</div>
-				</div>				
-				<div class="seguridad">
-					<div class="icono-seguridad visa"></div>
-					<div class="icono-seguridad mastercard"></div>
-					<div class="icono-seguridad paypal"></div>
-				</div>
 			</div>
 		</div>
 		<div class="row">
@@ -81,6 +26,68 @@
 		<p>Se encontraron <em> 0 Articulos</em> en su carrio</p>
 	</div>	
 	{%endif%}
+</script>
+
+<script id="resumen_template" type="text/template">
+	<div class="marco_resumen">
+		<table class="table">
+			<thead>
+				<tr>
+					<th colspan="2" class="titulo_resumen">Resumen de Orden</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td colspan="2"><span>{{num_lineas}}</span> Articulo(s) en el Carrito</td>
+				</tr>
+				<tr>
+					<td >Costo de Envio (Envio Estandar)</td>
+					<td width="80">Gratis</td>
+				</tr>
+				<tr>
+					<td><strong>SubTotal</strong></td>
+					<td><strong>S/. {{subtotal}}</strong></td>
+				</tr>
+			</tbody>
+		</table>
+		<a class="btn btn-especial btn-default btn-block link" href="/procesar-compra/">
+			Procesar Compra
+			<span class="icon-chevron-small-right"></span>
+		</a>
+		<div class="text-center texto_envio">
+			¡Tu pedido califica para envio gratuito!
+		</div>
+	</div>				
+	<div class="seguridad">
+		<div class="icono-seguridad visa"></div>
+		<div class="icono-seguridad mastercard"></div>
+		<div class="icono-seguridad paypal"></div>
+	</div>
+</script>
+
+<script id="orden_resumen_template" type="text/template">
+	<table class="table">
+		<thead>
+			<tr>
+				<th colspan="2">Resumen de Orden</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td colspan="2"><span>{{num_lineas}}</span> Articulo(s) en el Carrito</td>
+			</tr>
+			<tr>
+				<td>Costo de Envio (Envio Estandar)</td>
+				<td>Gratis</td>
+			</tr>
+			<tr>
+				<td>SubTotal</td>
+				<td>S/. {{subtotal}}</td>
+			</tr>
+		</tbody>
+	</table>
+	<a class="btn btn-especial btn-default btn-block link" href="/procesar-compra/">Ir a la Caja</a>
+
 </script>
 
 <script id="mini_carro_template" type="text/template">
@@ -190,8 +197,8 @@
 	</div>
 	
 	<div class="precio_linea caja_detalle_movil">
-		<span class="etiqueta_mobil">Precio</span>
-		<span>S/. {{precio}}</span>
+		
+		<span><strong>S/. {{precio}}</strong></span>
 	</div>
 
 	<div class="cantidad_linea">

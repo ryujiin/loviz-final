@@ -35,6 +35,7 @@ define([
                 descripcion:modelo.toJSON().descripcion
             })
             this.rellenar(modelo);
+            debugger;
         },
         buscar_page:function(slug){
             var self = this;
@@ -47,7 +48,7 @@ define([
                     self.collection.add(e);
                     self.buscar_page(slug);
                 }).fail(function () {
-                    debugger;
+                    Backbone.history.navigate('error_44', {trigger:true});
                 })
             }else{
                 this.render(coincidencia);

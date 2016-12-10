@@ -146,22 +146,18 @@
 
 <script id="productosLista_tlp" type="text/template">
 	<a href="{{link}}" class="link">
-		{%if oferta%}
+		{%if en_oferta%}
 		<div class="oferta">Oferta</div>
 		{%endif%}
 		<figure class="imagen_lista">
-			{%for img in imagenes_producto%}
-				{%if img.orden <= 0 %}
-					<img src="{{img.imagen_medium}}">
-				{%endif%}
-			{%endfor%}
+			<img src="{{thum}}">
 		</figure>
 	    <div class="nombre_productos">
 	    	<span>{{nombre}}</span>
 	    	<span class="color_productos">"{{color}}"</span>
 	    </div>
 	    <div class="precios">
-	      {%if oferta%}    
+	      {%if en_oferta%}    
 	        <div class="old_precio"><span>S/. {{precio}}</span></div>     
 	      {%endif%}
 	      <div class="current_precio"><span>S/. {{precio_venta}}</span></div>

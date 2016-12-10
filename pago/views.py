@@ -179,8 +179,6 @@ def get_stripe_key(request):
 from django.conf import settings
 
 def definir_pago(request):
-	enviar_mail()
-
 	valor = False
 	if request.POST:
 		if request.POST['direccion']:			

@@ -15,7 +15,7 @@ class PaginaViewsets(viewsets.ReadOnlyModelViewSet):
 		slug = self.request.query_params.get('slug', None)
 		queryset = Pagina.objects.filter(activo=True)
 		if slug:
-			qeryset = queryset.get(slug=slug)
+			queryset = queryset.filter(slug=slug)
 		return queryset
 
 class HomeView(TemplateView):

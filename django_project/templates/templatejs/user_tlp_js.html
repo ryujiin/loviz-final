@@ -137,9 +137,8 @@
 </script>
 
 <script id="page_user_tlp" type="text/template">
-	<div class="nav-breadcrumb"></div>
 	<div class="pt_account Account-Show account-welcome container">
-	  <div id="primary">
+	  <div id="" class="col-md-9">
 	    <h1 class="current-customer-logout">
 	    	<span class="account-sub-header">Bienvenido</span>
 	    	<span class="first-name">{{first_name}} </span>
@@ -150,8 +149,9 @@
 	        <div id="welcomeInfo" class="margin-bot-20">
 	          <div id="leftInfo">
 	            <h3>Informacion de Cuenta</h3>
-	            <a href="#" class="acctNavLinks" data-toggle="modal" data-target="#usuario_edit">Administre su correo electronico y la informacion de inicio de sesion</a><br/><br/>
-	            <h3>Direccion</h3>
+	            <a href="#" class="acctNavLinks" data-toggle="modal" data-target="#usuario_edit">
+	            	Administrar informacion de cuenta</a><br/><br/>
+	            <h3>Direcciones</h3>
 	            <a href="#" class="acctNavLinks" data-toggle="modal" data-target="#usuario_direcciones">Gestiona tus direcciones de facturacion y envio</a><br/><br/>	           
 	            <h3>Lista de Pedidos</h3>
 	            <a href="#" class="acctNavLinks" data-toggle="modal" data-target="#usuario_pedidos">Comprueba el estado de sus pedidos</a><br/><br/>
@@ -163,7 +163,7 @@
 	      </div>
 	    </div>
 	  </div>
-	  <div id="secundary" class="nav">
+	  <div id="" class="nav col-md-3">
 	    <nav>
 	      <div class="secondary-navigation">
 	        <div class="content-asset">
@@ -218,17 +218,20 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true"></span>
 				</button>
+				<div class="foto">
+				</div>
 				<h3>Editar Cuenta</h3>
 			</div>
 			<div class="modal-body">
+				<input type="file" style="visibility: hidden; display:none" id="foto_perfil" name="foto_perfil" />
 				<fieldset>
-					<legend>Personal:<span>*<em>requerido</em></span></legend>
+					<legend>Personal:</legend>
 					<div class="form-group">
-						<label class="control-label" for="inputSuccess1">*Nombre:</label>
-						<input type="text" class="form-control" name="nombre_user" value="{{first_name}}">						
+						<label class="control-label" for="inputSuccess1">Nombre:</label>
+						<input type="text" class="form-control" name="nombre_user" value="{{first_name}}">
 					</div>
 					<div class="form-group">
-						<label class="control-label" for="inputSuccess1">*Apellido:</label>
+						<label class="control-label" for="inputSuccess1">Apellido:</label>
 						<input type="text" class="form-control" name="apellido_user" value="{{last_name}}">						
 					</div>
 					<div class="form-group">
@@ -249,13 +252,13 @@
 					<legend>Informacion de Login:<span>*<em>requerido</em></span></legend>
 					<div class="form-group">
 						<label class="control-label" for="inputSuccess1">*Correo Electronico:</label>
-						<input type="email" class="form-control" name="nombre_user" value="{{email}}">						
+						<input type="email" class="form-control" name="nombre_user" value="{{email}}">
 					</div>
 				</fieldset>
 			</div>
 			<div class="modal-footer">
 		      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-		      <button type="button" class="btn btn-primary">Guardar Cambios</button>
+		      <button type="button" class="btn btn-primary salvar-cambios">Guardar Cambios</button>
 		    </div>
 		</div>
 	</div>

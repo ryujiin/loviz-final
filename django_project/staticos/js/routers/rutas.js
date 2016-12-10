@@ -14,6 +14,7 @@ define([
     var AppRouter = Backbone.Router.extend({
         routes: {
             "":"root",
+            "p/:slug/":"pagina",
             'catalogo/:categoria/':'catalogo',
             "producto/:slug/":'productoSingle',            
             'usuario/perfil/':'perfil',
@@ -23,12 +24,14 @@ define([
             'felicidades/':'',          
             '*notFound': 'notFound',
         },
-
         initialize:function(){
         },
         root:function(){
             PaginaView.buscar_page('home');
-            console.log('primero');
+        },
+        pagina:function (slug) {
+            debugger;
+            PaginaView.buscar_page(slug);
         },
         catalogo:function (categoria) {
             if (categoria==='ofertas') {

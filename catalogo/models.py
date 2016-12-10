@@ -79,6 +79,10 @@ class Producto(models.Model):
 			precio =0
 		return precio
 
+	def get_tallas_disponibles(self):
+		tallas = ProductoVariacion.objects.filter(producto=self,stock__gt=0)
+		return tallas
+
 	def get_precio_oferta_lista(self):
 		en_oferta = self.get_en_oferta()
 		if en_oferta:
@@ -136,21 +140,44 @@ class ProductoVariacion(models.Model):
 	def __unicode__(self):
 		return "%s - %s" %(self.producto,self.precio_minorista)
 
-	def get_precio_venta(self):
-		descuento= self.precio_minorista*self.oferta/100
-		precio = self.precio_minorista - descuento
+	#def get_precio_venta(self):
+		#descuento= self.precio_minorista*self.oferta/100
+		#precio = self.precio_minorista - descuento
+		#return precio
+
+	def get_precio(self):
+		if self.precio_oferta:
+			precio = self.precio_oferta
+		else:
+			precio = self.precio_minorista
 		return precio
 
 	def save(self, *args, **kwargs):
-		if self.precio_oferta:
-			porcentaje = self.precio_oferta*100/self.precio_minorista
-			self.oferta = 100-int(porcentaje)
-		if self.oferta and not self.precio_oferta:
-			self.precio_oferta = self.precio_minorista*(100-self.oferta)/100
+		if not self.precio_oferta:
+			if self.oferta>0:
+				self.precio_oferta = self.precio_minorista - (self.precio_minorista*self.oferta/100)
+		else:
+			if not self.oferta:
+				self.oferta = (self.precio_minorista-self.precio_oferta)*100/self.precio_minorista
 		super(ProductoVariacion, self).save(*args, **kwargs)
 		if self.oferta>0:
 			self.producto.en_oferta = True
 			self.producto.save()
+#
+			#40-(40*10/100)=36
+			#40 - 36 =40*10/100
+			#(40-36)100/40 = 10
+
+
+		#if self.precio_oferta:
+			#porcentaje = self.precio_oferta*100/self.precio_minorista
+			#self.oferta = 100-int(porcentaje)
+		#if self.oferta and not self.precio_oferta:
+			#self.precio_oferta = self.precio_minorista*(100-self.oferta)/100
+		#super(ProductoVariacion, self).save(*args, **kwargs)
+		#if self.oferta>0:
+			#self.producto.en_oferta = True
+			#self.producto.save()
 
 def url_imagen_pr(self,filename):
 	url = "productos/imagen/%s/%s" % (self.producto.pk, filename)

@@ -37,6 +37,26 @@ class CatalogoViewsets(viewsets.ReadOnlyModelViewSet):
 			queryset = queryset.filter(slug=slug)
 		return queryset
 
+class ListaProductosViewsets(viewsets.ReadOnlyModelViewSet):
+	serializer_class = ProductoListaSerializers
+
+	def get_queryset(self):
+		queryset = Producto.objects.filter(activo=True).order_by('-actualizado')
+		categoria = self.request.query_params.get('categoria', None)
+		slug = self.request.query_params.get('slug',None)
+		limite = self.request.query_params.get('limite',None)
+		if limite:
+			queryset = queryset[:limite]
+		if categoria:
+			if categoria == 'ofertas':
+				queryset = queryset.filter(en_oferta=True)
+			elif categoria == 'novedades':
+				queryset = queryset.filter(actualizado__gte=datetime.now()-timedelta(days=how_many_days))
+			else:
+				queryset = queryset.filter(categorias__slug=categoria)
+		if slug:
+			queryset = queryset.filter(slug=slug)
+		return queryset
 
 #from drf_haystack.viewsets import HaystackViewSet
 ##aun no se usa la busqueda mas adelante derrepente

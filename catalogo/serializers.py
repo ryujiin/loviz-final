@@ -33,8 +33,7 @@ class ProductoVariacionSerializer(serializers.ModelSerializer):
 		fields =('id','talla','precio','oferta','precio_venta','stock')
 
 	def get_precio(self,obj):
-		#precio_oferta
-		precio = obj.get_precio_venta()
+		precio = obj.get_precio()
 		if precio:
 			precio ="%0.2f" %(precio)
 		else:
@@ -166,6 +165,67 @@ class ProductoSingleSereializer(serializers.ModelSerializer):
 	def get_num_comentarios(self,obj):
 		return Comentario.objects.filter(producto=obj.id).count()
 
+class TallasDisponiblesSerializer(serializers.ModelSerializer):
+	talla = serializers.CharField(read_only=True)
+	class Meta:
+		model = ProductoVariacion
+		fields = ('talla','stock')
+
+
+class ProductoListaSerializers(serializers.ModelSerializer):
+	color = serializers.CharField(read_only=True)
+	thum = serializers.SerializerMethodField('get_thum_img')
+	precio = serializers.SerializerMethodField('get_precio_lista')
+	precio_venta = serializers.SerializerMethodField('get_precio_descuento')
+	valoracion = serializers.SerializerMethodField()
+	tallas_disponibles = serializers.SerializerMethodField()
+	link = serializers.SerializerMethodField()	
+
+	class Meta:
+		model = Producto
+		fields = ('id','nombre','full_name','color','slug','link',
+				'thum','en_oferta','precio','precio_venta','valoracion','tallas_disponibles')
+
+	def get_thum_img(self,obj):
+		thum = obj.get_thum().url
+		return thum
+
+	def get_link(self,obj):
+		link = '/producto/%s/' %obj.slug
+		return link
+
+	def get_precio_lista(self,obj):
+		precio = obj.get_precio_lista()
+		precio ="%0.2f" %(precio)
+		return precio
+
+	def get_precio_descuento(self,obj):
+		precio= obj.get_precio_oferta_lista()
+		precio ="%0.2f" %(precio)		
+		return precio
+
+	def get_valoracion(self,obj):
+		valoracion = self.get_valor_producto(obj)
+		valoracion ="%0.1f" %(valoracion)		
+		return valoracion
+
+	def get_valor_producto(self,obj):
+		valoraciones = Comentario.objects.filter(producto=obj.id)
+		num = Comentario.objects.filter(producto=obj.id).count()
+		valor = 0.0
+		valoracion = 0
+		for varia in valoraciones:
+			valor = valor+varia.valoracion
+		if num!=0:
+			valoracion = valor/num
+		return valoracion
+
+	def get_tallas_disponibles(self,obj):
+		tallas = obj.get_tallas_disponibles()
+		serializer = TallasDisponiblesSerializer(instance=tallas, many=True)
+		return serializer.data
+
+
 #Serializer de busqueda
 #from drf_haystack.serializers import HaystackSerializer
 #from search_indexes import ProductoIndex
@@ -190,3 +250,4 @@ class ProductoListaSerializer(serializers.ModelSerializer):
 class ProductoSingleEditable(serializers.ModelSerializer):
 	class Meta:
 		model = Producto
+

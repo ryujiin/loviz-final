@@ -1,26 +1,35 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 class Pagina(models.Model):
 	titulo = models.CharField(max_length=100,help_text='El titulo de la pagina web')
 	slug = models.SlugField(unique=True,max_length=120)
+	categoria = models.ForeignKey('Categoria',blank=True,null=True)
 	descripcion = models.CharField(max_length=150,help_text='La descripcion que se vera en la pagina para el buscador')
 	activo = models.BooleanField(default=True)	
 	estilo = models.CharField(max_length=100,blank=True)
-	cuerpo = models.TextField(blank=True)
-	imagenes = models.F
+	#cuerpo = models.TextField(blank=True)
+	contenido = RichTextUploadingField(blank=True)
 
 	def __unicode__(self):
 		return self.slug
+
+class Categoria(models.Model):
+	titulo = models.CharField(max_length=100,help_text='Titulo de Categoria')
+	slug = models.SlugField(unique=True,max_length=120)	
 
 class Bloque(models.Model):
 	titulo = models.CharField(max_length=100,blank=True,help_text='El titulo del bloque')
 	page = models.ForeignKey(Pagina,blank=True,null=True,related_name='bloques')
 	seccion = models.CharField(max_length=100,blank=True,help_text='El id donde se colocara')	
 	estilo = models.CharField(max_length=100,blank=True)
-	cuerpo = models.TextField(blank=True)
+	#cuerpo = models.TextField(blank=True)
+	contenido = RichTextUploadingField(blank=True)	
 	template = models.CharField(max_length=100,blank=True,null=True)
 	activo = models.BooleanField(default=True)
+
 
 	def __unicode__(self):
 		return "%s de %s " %(self.titulo,self.page)
@@ -49,7 +58,23 @@ class ImageCarrusel(models.Model):
 	orden = models.PositiveIntegerField(default=0)
 	imagen = models.ImageField(upload_to='bloque/carrusel')
 
+class Menu(models.Model):
+	titulo = models.CharField(max_length=100,blank=True)
+	estilo = models.CharField(max_length=100,blank=True)
+	template = models.CharField(max_length=100,blank=True)
+	seccion = models.CharField(max_length=100,blank=True,help_text='El id donde se colocara')
+	paginas = models.ManyToManyField(Pagina,blank=True,related_name='menus')
+	activo = models.BooleanField(default=True)
+	def __unicode__(self):
+		return self.titulo
 
+class LinkMenu(models.Model):
+	nombre = models.CharField(max_length=100,blank=True)
+	menu = models.ForeignKey(Menu, related_name='links')
+	icono = models.CharField(max_length=100,blank=True)
+	link = models.CharField(max_length=100,blank=True)
+	estilo = models.CharField(max_length=100,blank=True)
+	orden = models.PositiveIntegerField(default=0)
 
 
 # Create your models here.
@@ -120,22 +145,5 @@ class ImageCarrusel(models.Model):
 	#class Meta:
 		#ordering = ['orden']
 #
-#class Menu(models.Model):
-	#titulo = models.CharField(max_length=100,blank=True)
-	#estilo = models.CharField(max_length=100,blank=True)
-	#template = models.CharField(max_length=100,blank=True)
-	#seccion = models.CharField(max_length=100,blank=True,help_text='El id donde se colocara')
-	#paginas = models.ManyToManyField(Page,blank=True,related_name='menus')
-	#activo = models.BooleanField(default=True)
-#
-	#def __unicode__(self):
-		#return self.titulo
-#
-#class LinkMenu(models.Model):
-	#nombre = models.CharField(max_length=100,blank=True)
-	#menu = models.ForeignKey(Menu, related_name='links')
-	#icono = models.CharField(max_length=100,blank=True)
-	#link = models.CharField(max_length=100,blank=True)
-	#estilo = models.CharField(max_length=100,blank=True)
-	#orden = models.PositiveIntegerField(default=0)
+
 

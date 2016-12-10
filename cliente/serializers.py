@@ -10,9 +10,64 @@ class DireccionSerilizer(serializers.ModelSerializer):
 		fields = ('__all__')
 
 class UsuarioSerializer(serializers.ModelSerializer):
+	foto = serializers.SerializerMethodField()
+	telefono = serializers.SerializerMethodField()
+	genero = serializers.SerializerMethodField()
+	dni = serializers.SerializerMethodField()
+
 	class Meta:
 		model = User
-		fields = ('id','username','first_name','last_name','email','is_staff','is_superuser')
+		fields = ('id','username','first_name','last_name','email','is_staff',
+				'is_superuser','foto','telefono','genero','dni')
+
+	def get_foto(self,obj):
+		print obj
+		foto = ''
+		try:
+			cliente = Cliente.objects.get(usuario = obj)
+		except Cliente.DoesNotExist:
+			cliente = None
+		if cliente:
+			if cliente.foto:
+				foto = cliente.foto.url
+		return foto
+
+	def get_telefono(self,obj):
+		telefono = ''
+		try:
+			cliente = Cliente.objects.get(usuario = obj)
+		except Cliente.DoesNotExist:
+			cliente = None
+		if cliente:
+			telefono = cliente.telefono
+		return telefono
+
+	def get_genero(self,obj):
+		genero = ''
+		try:
+			cliente = Cliente.objects.get(usuario = obj)
+		except Cliente.DoesNotExist:
+			cliente = None
+		if cliente:
+			genero = cliente.genero
+		return genero
+
+	def get_dni(self,obj):
+		genero = ''
+		try:
+			cliente = Cliente.objects.get(usuario = obj)
+		except Cliente.DoesNotExist:
+			cliente = None
+		if cliente:
+			genero = cliente.dni
+		return genero
+
+
+class ClienteSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Cliente
+		fields = ('__all__')
+
 
 class PerfilUSerSerializer(serializers.ModelSerializer):
 	email = serializers.SerializerMethodField('get_email')
@@ -34,15 +89,20 @@ class PerfilUSerSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+	foto = serializers.SerializerMethodField()
 	class Meta:
 		model=User
-		fields = ('username','password', 'first_name', 'last_name', 'email','is_staff')
+		fields = ('username','password', 'first_name', 'last_name', 'email','is_staff','foto')
 		write_only_fields = ('password',)
 
 	def restore_object(self, attrs, instance=None):
 		user = super(UserSerializer, self).restore_object(attrs, instance)
 		user.set_password(attrs['password'])
 		return user
+
+	def get_foto(self,obj):
+		foto ='enrique'
+		return foto
 
 class ComentarioImagenSerializer(serializers.ModelSerializer):
 	class Meta:

@@ -1,0 +1,1 @@
+define(["underscore","backbone","../models/pedido","../models/user"],function(e,t,n,r){var i=t.Collection.extend({url:"/api/pedidos/",model:n});return i});

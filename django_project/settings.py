@@ -45,6 +45,8 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'paypal.standard.ipn',
     'corsheaders',
+    'ckeditor',
+    'ckeditor_uploader',
     #mis apps
     'carro',
     'catalogo',
@@ -163,6 +165,10 @@ SENDGRID_API_KEY = config.SENDGRID_API_KEY
 CORS_ORIGIN_ALLOW_ALL = True
 
 DEFAULT_FROM_EMAIL = 'admin@lovizdc.com'
+
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_RESTRICT_BY_USER = False
 
 try:
     from .local import *

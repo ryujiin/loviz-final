@@ -29,7 +29,7 @@ class PaginaSerializer(serializers.ModelSerializer):
 	carruseles = CarruselSerializer(many=True)
 	class Meta:
 		model = Pagina
-		fields = ('id','titulo','slug','descripcion','activo','estilo','cuerpo','carruseles')
+		fields = ('id','titulo','slug','descripcion','activo','estilo','contenido','carruseles')
 
 #class CarruselSerializer(serializers.ModelSerializer):
 	#seccion = serializers.CharField(read_only=True)

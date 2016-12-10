@@ -40,6 +40,26 @@ class PerfilUserViewSet(APIView):
 		serializer = UsuarioSerializer(perfil)
 		return Response(serializer.data)
 
+
+class ClienteViewSet(viewsets.ModelViewSet):
+	permission_classes = (IsAuthenticated,)	
+	serializer_class = ClienteSerializer
+
+	def get_queryset(self):
+		queryset = Cliente.objects.filter(usuario = self.request.user)
+		return queryset
+
+	def create(self, request):
+		if request.user.is_authenticated:
+			request.data['usuario'] = request.user.pk
+			serializer = ClienteSerializer(data=request.data)
+			if serializer.is_valid():
+				serializer.save()
+				return Response(serializer.data, status=status.HTTP_201_CREATED)
+			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 from rest_framework.permissions import AllowAny
 from .permissions import IsStaffOrTargetUser
 
@@ -122,6 +142,14 @@ def ingresar(request):
 		else:
 			raise Http404
 
+def cambiar_foto(request):
+	if request.method=='POST' and request.FILES['foto_perfil']:
+		print 'fwef'
+	else:
+		return HttpResponse(json.dumps({'error_text':'No es formulario'}),
+			content_type='application/json;charset=utf8')
+
+
 @login_required(login_url='/cliente/cuenta/')
 def salir(request):
 	logout(request)
@@ -136,6 +164,8 @@ def nuevo_usuario(request):
 										first_name=request.POST['nombre'],
 										last_name=request.POST['apellido'])
 		if user:
+			cliente = Cliente(usuario=user)
+			cliente.save()
 			email = request.POST['username']
 			nombre ="%s %s" %(request.POST['nombre'],request.POST['apellido'])
 			enviar_mail(email,nombre)

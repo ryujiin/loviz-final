@@ -3,8 +3,12 @@
 <script id="page_tema1_template" type="text/template">
 	<section id="seccion_top">
 	</section>	
-	<section id="middle" class="container-fluid">
+	<section id="middle" class="container">
 		<div class="row">
+			<section id="seccion_left" class="col-md-12">
+				<h1 class="titulo_page">{{titulo}}</h1>
+				<div class="contenido">{{contenido|striptags}}</div>
+			</section>			
 			<section id="seccion_left" class="col-md-2"></section>
 			<section id="seccion_center" class="col-md-8">{{cuerpo|safe}}</section>	
 			<section id="seccion_right" class="col-md-2"></section>
