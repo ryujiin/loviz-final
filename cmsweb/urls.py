@@ -12,6 +12,7 @@ urlpatterns = [
 	url(r'^carro/',HomeView.as_view() , name='carro'),
 	url(r'^usuario/perfil/$',HomeView.as_view() , name='carro'),
 	url(r'^procesar-compra/',HomeView.as_view() , name='procesar'),
+	url(r'^0C32D5A4FC6AB8AEAB4A438740AF06C2.txt',Verificar.as_view() , name='procesar'),
 	url(r'^p/',HomeView.as_view() , name='page_static'),
 	url(r'^felicidades/$',felicidades , name='felicidades'),
 	#usuario reset

@@ -1836,6 +1836,9 @@ h2 .linea {
   border: 1px solid #ddd;
   cursor: pointer;
 }
+.pagina.sin-titulo h1.titulo_page {
+  display: none;
+}
 .carrusel_producto {
   position: relative;
 }

@@ -8,7 +8,11 @@ class ImageCarruselInline(admin.TabularInline):
 class CarruselAdmin(admin.ModelAdmin):
 	inlines = [ImageCarruselInline,]
 
+class MenuAdmin(admin.ModelAdmin):
+	inlines = []
+
 admin.site.register(Pagina)
 admin.site.register(Bloque)
 admin.site.register(Carrusel,CarruselAdmin)
 admin.site.register(ImageCarrusel)
+admin.site.register(Menu,MenuAdmin)

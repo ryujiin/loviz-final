@@ -18,8 +18,6 @@ define([
         el:$('#contenido'),
         id: '',
 
-        className: '',
-
         collection: PaginasCollection,
 
         events: {},
@@ -27,15 +25,19 @@ define([
         initialize: function () {
         },
 
-        render: function (modelo) {        
-            this.template= swig.compile($('#page_tema1_template').html());
+        render: function (modelo) {
+            this.template = swig.compile($('#page_tema1_template').html());
+
+            //this.template = Handlebars.compile($('#page_tema1_template').html());
             this.$el.html(this.template(modelo.toJSON()));
             HeadModel.set({
                 titulo:modelo.toJSON().titulo,
                 descripcion:modelo.toJSON().descripcion
             })
             this.rellenar(modelo);
-            debugger;
+            if (modelo.toJSON().estilo) {
+                this.$el.addClass('pagina '+ modelo.toJSON().estilo)
+            };
         },
         buscar_page:function(slug){
             var self = this;

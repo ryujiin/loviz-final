@@ -27,6 +27,8 @@ class VerificarView(TemplateView):
 class CustomView(TemplateView):
 	template_name = "custom.html"
 
+class Verificar(TemplateView):
+	template_name = "text.html"
 
 # Create your views here.
 #class CarruselViewsets(viewsets.ReadOnlyModelViewSet):
