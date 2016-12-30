@@ -9,5 +9,4 @@ class MaterialAdmin(admin.ModelAdmin):
 
 admin.site.register(Material,MaterialAdmin)
 admin.site.register(Proveedor)
-admin.site.register(PlantaPVC)
 admin.site.register(MaterialTipo)

@@ -5,7 +5,7 @@ from utiles.models import Talla,Color
 class Material(models.Model):
 	nombre = models.CharField(max_length=100,blank=True)
 	imagen = models.ImageField(upload_to='material/imagen/',blank=True,null=True)
-	proveedor = models.ForeignKey('Proveedor',blank=True)
+	proveedor = models.ForeignKey('Proveedor',blank=True,null=True)
 	tipo = models.ForeignKey('MaterialTipo',blank=True)
 	creado = models.DateTimeField(auto_now_add=True)
 
@@ -52,9 +52,3 @@ class Proveedor(models.Model):
 
 	def __unicode__(self):
 		return self.nombre
-
-class PlantaPVC(models.Model):
-	nombre = models.CharField(max_length=100,blank=True)
-	talla = models.ForeignKey(Talla)
-	color = models.ForeignKey(Color)
-	tipo = models.CharField(max_length=100)

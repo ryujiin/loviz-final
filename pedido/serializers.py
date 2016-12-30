@@ -12,12 +12,13 @@ class PedidoSerializer(serializers.ModelSerializer):
 	estado_pedido = serializers.CharField(read_only=True)
 	user = serializers.CharField(read_only=True)
 	gasto_envio = serializers.CharField(read_only=True)
+	fecha_compra = serializers.DateTimeField(format="%Y-%m-%d %I:%M %p",required=False, read_only=True)
 	class Meta:
 		model = Pedido
 		fields = ('id','numero_pedido','user',
 					'gasto_envio','direccion_envio',
 					'metodoenvio','fecha_compra','estado_pedido',
-					'metodo_pago','telefono_pedido','pago_pedido')
+					'metodo_pago','telefono_pedido','pago_pedido','fecha_final')
 
 class MetodoEnvioSerializer(serializers.ModelSerializer):
 	class Meta:

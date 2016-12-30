@@ -24,8 +24,7 @@ class CatalogoViewsets(viewsets.ReadOnlyModelViewSet):
 		categoria = self.request.query_params.get('categoria', None)
 		slug = self.request.query_params.get('slug',None)
 		limite = self.request.query_params.get('limite',None)
-		if limite:
-			queryset = queryset[:limite]
+		
 		if categoria:
 			if categoria == 'ofertas':
 				queryset = queryset.filter(en_oferta=True)
@@ -35,6 +34,8 @@ class CatalogoViewsets(viewsets.ReadOnlyModelViewSet):
 				queryset = queryset.filter(categorias__slug=categoria)
 		if slug:
 			queryset = queryset.filter(slug=slug)
+		if limite:
+			queryset = queryset[:limite]
 		return queryset
 
 class ListaProductosViewsets(viewsets.ReadOnlyModelViewSet):
@@ -45,8 +46,7 @@ class ListaProductosViewsets(viewsets.ReadOnlyModelViewSet):
 		categoria = self.request.query_params.get('categoria', None)
 		slug = self.request.query_params.get('slug',None)
 		limite = self.request.query_params.get('limite',None)
-		if limite:
-			queryset = queryset[:limite]
+		
 		if categoria:
 			if categoria == 'ofertas':
 				queryset = queryset.filter(en_oferta=True)
@@ -56,6 +56,8 @@ class ListaProductosViewsets(viewsets.ReadOnlyModelViewSet):
 				queryset = queryset.filter(categorias__slug=categoria)
 		if slug:
 			queryset = queryset.filter(slug=slug)
+		if limite:
+			queryset = queryset[:limite]
 		return queryset
 
 #from drf_haystack.viewsets import HaystackViewSet

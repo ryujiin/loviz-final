@@ -7,7 +7,7 @@ define([
     '../views/carro/minicarro',
     'carro_main',
     '../views/usuario/user_links',  
-    '../models/user'  
+    '../models/user'
 ], function ($, _, Backbone,CarroView,CarroModel,UserLinkView,UserModel) {
     'use strict';
 

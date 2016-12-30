@@ -30,12 +30,14 @@ class Pedido(models.Model):
 	direccion_envio = models.ForeignKey(Direccion,blank=True,null=True)
 	metodoenvio = models.ForeignKey('MetodoEnvio',blank=True,null=True)
 	fecha_compra = models.DateTimeField(auto_now_add=True, db_index=True)
+	fecha_final = models.DateTimeField(blank=True,null=True)
 	metodo_pago = models.ForeignKey('MetodoPago',blank=True,null=True)
 	pago_pedido = models.OneToOneField('Pago',blank=True,null=True)
 	estado_pedido = models.CharField(max_length=120,default=AUTENTICADO,choices=ESTADO_ELECCION)
 	pagado = models.BooleanField(default=False)
 	enviado = models.BooleanField(default=False)
 	telefono_pedido = models.CharField(max_length=100,blank=True)
+
 
 	def __unicode__(self):
 		return "%s - %s" %(self.estado_pedido,self.numero_pedido)

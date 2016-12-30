@@ -21,6 +21,7 @@ class Producto(models.Model):
 	descripcion = models.TextField(blank=True,null=True)
 	creado = models.DateTimeField(auto_now_add=True)
 	actualizado = models.DateTimeField(auto_now=True)
+	modelo = models.ForeignKey('Modelo',blank=True,null=True)
 	video = models.CharField(max_length=120, blank=True,null=True)
 	vendidos = models.PositiveIntegerField(default=0,editable=False)
 	en_oferta = models.BooleanField(default=False)
@@ -163,21 +164,7 @@ class ProductoVariacion(models.Model):
 		if self.oferta>0:
 			self.producto.en_oferta = True
 			self.producto.save()
-#
-			#40-(40*10/100)=36
-			#40 - 36 =40*10/100
-			#(40-36)100/40 = 10
 
-
-		#if self.precio_oferta:
-			#porcentaje = self.precio_oferta*100/self.precio_minorista
-			#self.oferta = 100-int(porcentaje)
-		#if self.oferta and not self.precio_oferta:
-			#self.precio_oferta = self.precio_minorista*(100-self.oferta)/100
-		#super(ProductoVariacion, self).save(*args, **kwargs)
-		#if self.oferta>0:
-			#self.producto.en_oferta = True
-			#self.producto.save()
 
 def url_imagen_pr(self,filename):
 	url = "productos/imagen/%s/%s" % (self.producto.pk, filename)
@@ -211,23 +198,30 @@ class ProductoImagen(models.Model):
 class MaterialProducto(models.Model):
 	producto = models.ForeignKey(Producto,blank=True, related_name='material_producto')
 	material = models.ForeignKey(Material,blank=True)
-	cantidad = models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True,help_text='La cantidad usada en este producto de este material')
-	costo = models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True)
-	seccion = models.ForeignKey('SeccionProducto',blank=True)
+	vista = models.BooleanField(default=True)
 	descripcion = models.CharField(max_length=300,blank=True)
 
 	def save(self, *args, **kwargs):
-		if not self.costo:
-			precio = PrecioMaterial.objects.filter(material=self.material).order_by('pk')[0]
-			self.costo = precio.precio/self.cantidad
 		super(MaterialProducto, self).save(*args, **kwargs)
 
+
 class SeccionProducto(models.Model):
-	nombre = models.CharField(max_length=100)
+	UNIDADES=(('cm','centimetro'),('und','unidad'),('m','metro'),('lt','litro'))
+	nombre = models.CharField(max_length=100,blank=True)
+	talla = models.ForeignKey(Talla,blank=True,null=True)
+	cantidad = models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True,help_text='La cantidad usada en este producto de este material')
+	unidad = models.CharField(max_length=10,blank=True,null=True,choices=UNIDADES)
 	modelo = models.ForeignKey('Modelo',blank=True)
 
 	def __unicode__(self):
 		return self.nombre
+
+	def save(self, *args, **kwargs):
+		if not self.slug:
+			slug = '%s %s' (self.nombre,self.talla.nombre)
+			self.slug = slugify(slug)
+		super(SeccionProducto, self).save(*args, **kwargs)
+
 
 class Modelo(models.Model):
 	nombre = models.CharField(max_length=100)

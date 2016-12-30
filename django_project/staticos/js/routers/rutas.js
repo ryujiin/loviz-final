@@ -25,6 +25,7 @@ define([
             '*notFound': 'notFound',
         },
         initialize:function(){
+            this.bind('route', this._pageView);
         },
         root:function(){
             PaginaView.buscar_page('home');
@@ -61,6 +62,10 @@ define([
         },
         felicidades:function () {
             debugger;
+        },
+        _pageView:function () {
+            var path = Ba1ckbone.history.getFragment();
+            ga('send', 'pageview', {page: "/" + path});
         },
         notFound:function () {
             $('body').removeClass();

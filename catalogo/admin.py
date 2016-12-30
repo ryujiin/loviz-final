@@ -12,6 +12,12 @@ class VariacionInline(admin.TabularInline):
 class MaterialInline(admin.TabularInline):
 	model = MaterialProducto
 
+class SeccionProductoInline(admin.TabularInline):
+	model = SeccionProducto
+
+class ModeloAdmin(admin.ModelAdmin):
+	inlines = [SeccionProductoInline,]
+
 class ProductoAdmin(admin.ModelAdmin):
 	inlines = [ProductoImagenInline,VariacionInline,MaterialInline,]
 	filter_horizontal = ('relaciones','categorias')
@@ -23,12 +29,10 @@ class ProductoAdmin(admin.ModelAdmin):
 		return tag
 	foto_producto.allow_tags = True
 
-
-
 class CategoriaAdmin(admin.ModelAdmin):
 	list_display=('nombre','full_name','slug','nombre')
 
 admin.site.register(Producto,ProductoAdmin)
 admin.site.register(Categoria,CategoriaAdmin)
 admin.site.register(SeccionProducto)
-admin.site.register(Modelo)
+admin.site.register(Modelo,ModeloAdmin)

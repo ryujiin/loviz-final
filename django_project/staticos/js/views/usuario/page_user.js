@@ -77,7 +77,6 @@ define([
             });
             var manage_pedidos = new ManagePedidos({
                 el:this.$('#usuario_pedidos'),
-                model:this.model
             });
             var manage_lista_deseos = new ManageDeseos({
                 el:this.$('#usuario_lista_deseos'),

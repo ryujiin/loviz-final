@@ -155,8 +155,10 @@
 	            <a href="#" class="acctNavLinks" data-toggle="modal" data-target="#usuario_direcciones">Gestiona tus direcciones de facturacion y envio</a><br/><br/>	           
 	            <h3>Lista de Pedidos</h3>
 	            <a href="#" class="acctNavLinks" data-toggle="modal" data-target="#usuario_pedidos">Comprueba el estado de sus pedidos</a><br/><br/>
+	            <!--
 	            <h3>Lista de Deseos</h3>
 	            <a href="#" class="acctNavLinks" data-toggle="modal" data-target="#usuario_lista_deseos">Ver o modificar productos de la lista o invitar amigos.</a>
+	        	-->
 	          </div>
 	          <div id="rightInfo"></div>
 	        </div>
@@ -164,6 +166,7 @@
 	    </div>
 	  </div>
 	  <div id="" class="nav col-md-3">
+	  	<!--
 	    <nav>
 	      <div class="secondary-navigation">
 	        <div class="content-asset">
@@ -203,6 +206,7 @@
 	        </div>
 	      </div>
 	    </nav>
+	-->
 	  </div>
 	</div>
 	<div id="usuario_edit" class="modal fade"></div>
@@ -295,8 +299,53 @@
 			<div class="modal-header">
 				<h4>Historial de Pedidos</h4>
 			</div>
+			<div class="modal-body">
+				{%if pedidos%}
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th># de Pedido</th>
+									<th>Gasto de Envio</th>
+									<th>Fecha de inicio</th>
+									<th>Fecha de final</th>
+									<th>Metdo de Pago</th>
+									<th>Estado del Pedido</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				{%else%}
+					<h4 class="text-center">
+						En este momento no tiene ningun pedido realizado , le invitamos a que revise nuestro <a href="/catalogo/ofertas/" class="link">catalogo</a>  donde estamos seguros que encontrara algo para especial para usted.
+					</h4>
+				{%endif%}
+			</div>
 		</div>
 	</div>
+</script>
+
+<script type="text/template" id="lista_pedidos_tlp">
+	<td><strong><a href="#" class="no-link">{{numero_pedido}}</a></strong></td>
+	<td>Gratis!!</td>
+	<td>{{fecha_compra}}</td>
+	<td>
+		{%if fecha_final%}
+			{{fecha_final}}
+		{%else%}
+		<a href="/procesar-compra/" class="link"><u>En curso!!</u></a>			
+		{%endif%}		
+	</td>
+	<td>
+		{%if metodo_pago%}
+			{{metodo_pago}}
+		{%else%}
+			<a href="/procesar-compra/" class="link"><u>Sin Definir!!</u></a>						
+		{%endif%}
+	</td>
+	<td>{{estado_pedido}}</td>
 </script>
 
 <script type="text/template" id="usuario_lista_deseos_tpl">
