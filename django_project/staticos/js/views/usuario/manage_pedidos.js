@@ -38,8 +38,8 @@ define([
             var listaPEdido = new Pedidos({
                 model:modelo
             })
-            this.$('tbody').append(listaPEdido.$el)
-        }
+            this.$('tbody').append(listaPEdido.$el) 
+        },
     });
 
     return UserFormLoginView;

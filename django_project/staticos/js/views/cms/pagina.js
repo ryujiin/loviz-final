@@ -27,8 +27,6 @@ define([
 
         render: function (modelo) {
             this.template = swig.compile($('#page_tema1_template').html());
-
-            //this.template = Handlebars.compile($('#page_tema1_template').html());
             this.$el.html(this.template(modelo.toJSON()));
             HeadModel.set({
                 titulo:modelo.toJSON().titulo,
@@ -47,10 +45,14 @@ define([
                 pagina.fetch({
                     data:$.param({slug:slug})
                 }).done(function (e) {
-                    self.collection.add(e);
-                    self.buscar_page(slug);
+                    if (e.length===0) {
+                        Backbone.history.navigate('error_404/', {trigger:true});
+                    }else{
+                        self.collection.add(e);
+                        self.buscar_page(slug);    
+                    }                    
                 }).fail(function () {
-                    Backbone.history.navigate('error_44', {trigger:true});
+                    Backbone.history.navigate('error_404/', {trigger:true});
                 })
             }else{
                 this.render(coincidencia);

@@ -167,6 +167,13 @@ p.bg-warning {
   -ms-animation: spin 1s linear infinite;
   animation: spin 1s linear infinite;
 }
+ul.menu {
+  padding: 0;
+  margin: 0;
+}
+ul.menu li {
+  list-style: none;
+}
 fieldset legend em {
   font-size: 0.7em;
 }
@@ -401,29 +408,37 @@ h2 .linea {
 #footer #submit_form_email .email_submit button:hover {
   background: rgba(0,0,0,0.6);
 }
-#footer .footer-block-menu .titulo-footer-menu {
-  font-size: 1.1em;
+#footer .footer-block-menu h4 {
+  font-size: 1.05em;
   border-bottom: 1px solid #ccc;
   cursor: pointer;
   margin: 0 0 10px;
   padding: 10px 0 5px;
 }
-#footer .footer-block-menu .nav {
+#footer .footer-block-menu h4:after {
+  content: '+';
+  display: inline-block;
+  padding-left: 2px;
+}
+#footer .footer-block-menu ul {
   display: none;
 }
-#footer .footer-block-menu .nav li {
+#footer .footer-block-menu ul li {
   margin-bottom: 5px;
 }
-#footer .footer-block-menu .nav li a {
+#footer .footer-block-menu ul li a {
   padding: 0;
   font-size: 0.9em;
 }
-#footer .footer-block-menu .nav li a:hover {
+#footer .footer-block-menu ul li a:hover {
   text-decoration: underline;
   background: none;
 }
-#footer .footer-block-menu .nav.activo {
+#footer .footer-block-menu ul.activo {
   display: block;
+}
+#footer .footer-block-menu.activo h4:after {
+  content: '-';
 }
 #footer .bloque_social {
   overflow: hidden;
@@ -449,8 +464,11 @@ h2 .linea {
   margin: 0;
   padding: 0;
 }
-@media (min-width: 992px) {
-  #footer .footer-block-menu .nav {
+@media (min-width: 1170px) {
+  #footer .footer-block-menu h4:after {
+    content: '';
+  }
+  #footer .footer-block-menu ul {
     display: block;
   }
 }

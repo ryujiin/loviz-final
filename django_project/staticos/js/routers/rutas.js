@@ -31,7 +31,6 @@ define([
             PaginaView.buscar_page('home');
         },
         pagina:function (slug) {
-            debugger;
             PaginaView.buscar_page(slug);
         },
         catalogo:function (categoria) {
@@ -64,7 +63,7 @@ define([
             debugger;
         },
         _pageView:function () {
-            var path = Ba1ckbone.history.getFragment();
+            var path = Backbone.history.getFragment();
             ga('send', 'pageview', {page: "/" + path});
         },
         notFound:function () {
