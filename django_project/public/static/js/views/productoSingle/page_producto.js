@@ -13,8 +13,9 @@ define([
     '../../views/productoSingle/add_to_cart',
     '../../views/productoSingle/nuevo_comentario',
     '../../views/productoSingle/comentarios_seccion',
+    '../../views/productoSingle/recomendados',
     '../../views/app/loader_full',
-], function ($, _, Backbone,swig,ProductoCollection,ComentariosCollection,HeadModel,Breadcrumb,Galeria_full,Galeria_mobil,Estrellas,AddToCart,NuevoComentario,Comentarios,LoaderFull) {
+], function ($, _, Backbone,swig,ProductoCollection,ComentariosCollection,HeadModel,Breadcrumb,Galeria_full,Galeria_mobil,Estrellas,AddToCart,NuevoComentario,Comentarios,Recomendados,LoaderFull) {
     'use strict';
 
     var ProductoView = Backbone.View.extend({
@@ -41,6 +42,7 @@ define([
             this.add_estrellas();        
             this.add_to_cart();
             this.add_comentario();
+            this.add_Recomendados();
         },
         get_modelo:function (slug) {
             var ajax_bloq = new LoaderFull();
@@ -120,6 +122,12 @@ define([
                 model:this.model,
                 collection:comentarios_collection
             })
+        },
+        add_Recomendados:function () {
+            var recomendados = new Recomendados({
+                el:this.$('#producto-asociado'),
+                model:this.model,
+            });
         }
     });
     

@@ -18,8 +18,6 @@ define([
         el:$('#contenido'),
         id: '',
 
-        className: '',
-
         collection: PaginasCollection,
 
         events: {},
@@ -27,14 +25,17 @@ define([
         initialize: function () {
         },
 
-        render: function (modelo) {        
-            this.template= swig.compile($('#page_tema1_template').html());
+        render: function (modelo) {
+            this.template = swig.compile($('#page_tema1_template').html());
             this.$el.html(this.template(modelo.toJSON()));
             HeadModel.set({
                 titulo:modelo.toJSON().titulo,
                 descripcion:modelo.toJSON().descripcion
             })
             this.rellenar(modelo);
+            if (modelo.toJSON().estilo) {
+                this.$el.addClass('pagina '+ modelo.toJSON().estilo)
+            };
         },
         buscar_page:function(slug){
             var self = this;
@@ -44,10 +45,14 @@ define([
                 pagina.fetch({
                     data:$.param({slug:slug})
                 }).done(function (e) {
-                    self.collection.add(e);
-                    self.buscar_page(slug);
+                    if (e.length===0) {
+                        Backbone.history.navigate('error_404/', {trigger:true});
+                    }else{
+                        self.collection.add(e);
+                        self.buscar_page(slug);    
+                    }                    
                 }).fail(function () {
-                    debugger;
+                    Backbone.history.navigate('error_404/', {trigger:true});
                 })
             }else{
                 this.render(coincidencia);

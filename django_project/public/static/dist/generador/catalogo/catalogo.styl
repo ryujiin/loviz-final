@@ -28,7 +28,7 @@
 				background #f1f1f1
 				color #f1f1f1	
 		.sort_by
-			display none			
+			display none		
 	.catalogo_productos
 		margin-top 10px		
 	.section-refinamiento
@@ -123,65 +123,30 @@
 						color #fff
 @media (min-width: 768px)
 	.catalogo
-		.section-refinamiento
-			display block
+		.section-refinamiento			
 			aside
 				&.siguiendo
 					position fixed
 					width 25%
 					top 90px
-		.catalogo_num_refino
-			.sort_by
-				display block
-	.lista-productos 
-		.productos 
-			figure
-				min-height 160px
-	.carro_page
-		.btn
-			width initial!important
-		.lineas_carro
-			margin-top 10px
-			.etiqueta_mobil
-				display none
-			.etiquetas
+	
+
+@media (min-width: 992px)
+	.catalogo
+		.section-refinamiento			
+			top 118px
+		.titulo-categoria
+			display flex
+			.marco_titulo_catalogo
+				width 20%
+			.catalogo_num_refino
+				box-shadow none
+				width 80%
 				display flex
-				padding 10px 0
-				border-bottom 2px solid #f4f4f4
-				span
-					font-weight 700
-					text-transform uppercase
-					font-family f_imprenta
-					letter-spacing 1px
-				.hiden
+				justify-content flex-end
+				.num_articulo
+					display block
+				.sort_by
+					display block
+				.modo_lista
 					display none
-			.lineas_items
-				border-bottom 1px solid rgba(6, 20, 2, 0.52)
-				.linea
-					display flex
-					position relative
-					border-bottom 1px solid #f4f4f4
-					padding 20px 0
-				.img_linea
-					width 15%
-				.detalle_linea
-					padding-top 0
-					width 30%
-				.subtotal_linea
-					margin-top 15px
-					.etiqueta_mobil
-						display none
-				.acciones_linea
-					border none
-			.img_linea
-				width 15%				
-			.detalle_linea
-				width 30%
-				padding-left 60px
-			.precio_linea,.cantidad_linea
-				width 15%
-				text-align center
-			.subtotal_linea,.acciones_linea
-				width 15%			
-	.paso_pago .panel_seccion .nav.nav-tabs li
-		width initial!important

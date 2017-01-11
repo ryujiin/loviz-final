@@ -23,7 +23,8 @@ define([
 
         id: '',
 
-        events: {},
+        events: {
+        },
 
         initialize: function () {
             this.listenTo(this.model, 'change', this.verificar_login);
@@ -67,19 +68,18 @@ define([
             header.render(titulo,descripcion);
         },
         crear_modales:function () {
-            var manage_cuenta = new ManageCuenta({
+            this.manage_cuenta = new ManageCuenta({
                 el:this.$('#usuario_edit'),
                 model:this.model
             });
-            var manage_direccciones = new ManageDirecciones({
+            this.manage_direccciones = new ManageDirecciones({
                 el:this.$('#usuario_direcciones'),
                 model:this.model
             });
-            var manage_pedidos = new ManagePedidos({
+            this.manage_pedidos = new ManagePedidos({
                 el:this.$('#usuario_pedidos'),
-                model:this.model
             });
-            var manage_lista_deseos = new ManageDeseos({
+            this.manage_lista_deseos = new ManageDeseos({
                 el:this.$('#usuario_lista_deseos'),
                 model:this.model
             })

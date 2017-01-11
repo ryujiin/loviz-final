@@ -6,6 +6,7 @@ define([
     'backbone',
     'swig',
     'carro_main',
+    '../../views/app/header',
     '../../models/user',
     '../../models/pedido',
     '../../views/procesar/paso_metodoenvio',
@@ -14,7 +15,7 @@ define([
     '../../views/procesar/paso_pago',    
     '../../views/procesar/resumen',
     '../../views/app/loader_full',
-], function ($, _, Backbone, swig,CarroModel,UserModel,PedidoModel,PasoEnvio,PasoIdentificar,DireccionesCollection,PasoPago,Resumen,LoaderFull) {
+], function ($, _, Backbone, swig,CarroModel,Header,UserModel,PedidoModel,PasoEnvio,PasoIdentificar,DireccionesCollection,PasoPago,Resumen,LoaderFull) {
     'use strict';
 
     var PageProcesarCompraView = Backbone.View.extend({
@@ -50,9 +51,15 @@ define([
             var self = this;
             if (CarroModel.toJSON().num_lineas) {
                 self.objtener_model();
+                self.changeHead();
             }else{
                 Backbone.history.navigate("/", {trigger: true});                    
             }
+        },
+        changeHead:function (argument) {
+            var titulo = 'Procesar Compra | LovizDc.com :: Loviz DelCarpio'
+            var descripcion = 'Area de procesamiento del pedido en LovizDC.com'
+            Header.render(titulo,descripcion);
         },
         aparecerAjax:function () {
             if (this.model.toJSON().ajax) {

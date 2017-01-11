@@ -26,7 +26,8 @@ require.config({
         },
         'facetr':{
             deps:['backbone'],
-        }
+        },
+        handlebars: 'handlebars'
     },
     paths: {
         jquery: '../bower_components/jquery/dist/jquery',
@@ -34,6 +35,7 @@ require.config({
         underscore: '../bower_components/underscore/underscore',
         bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
         swig: '../node_modules/swig/dist/swig',
+        handlebars: '../bower_components/handlebars/handlebars.min',
         owl: '../vendor/owl/owl.carousel',
         zoom: '../bower_components/jquery-zoom/jquery.zoom',
         storage: '../bower_components/jquery-storage-api/jquery.storageapi',
@@ -64,6 +66,8 @@ require([
     }
     $(window).scroll(fixDiv);
     fixDiv();
+
+    //node r.js -o build.js
 
     $(function(){
         $.ajaxSetup({

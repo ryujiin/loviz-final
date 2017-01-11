@@ -14,6 +14,7 @@ define([
     var AppRouter = Backbone.Router.extend({
         routes: {
             "":"root",
+            "p/:slug/":"pagina",
             'catalogo/:categoria/':'catalogo',
             "producto/:slug/":'productoSingle',            
             'usuario/perfil/':'perfil',
@@ -23,12 +24,14 @@ define([
             'felicidades/':'',          
             '*notFound': 'notFound',
         },
-
         initialize:function(){
+            this.bind('route', this._pageView);
         },
         root:function(){
             PaginaView.buscar_page('home');
-            console.log('primero');
+        },
+        pagina:function (slug) {
+            PaginaView.buscar_page(slug);
         },
         catalogo:function (categoria) {
             if (categoria==='ofertas') {
@@ -58,6 +61,10 @@ define([
         },
         felicidades:function () {
             debugger;
+        },
+        _pageView:function () {
+            var path = Backbone.history.getFragment();
+            ga('send', 'pageview', {page: "/" + path});
         },
         notFound:function () {
             $('body').removeClass();
