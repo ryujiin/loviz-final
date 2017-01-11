@@ -67,6 +67,8 @@ require([
     $(window).scroll(fixDiv);
     fixDiv();
 
+    //node r.js -o build.js
+
     $(function(){
         $.ajaxSetup({
             crossDomain: true,

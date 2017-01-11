@@ -1,7 +1,18 @@
 #galeria_full
 	display none
 	.product-thumbnails
-		.thumb
+		ul
+			max-height 400px
+			overflow-y hidden
+		.flechas
+			border 1px solid #ddd
+			border-radius 5px
+			text-align center
+			cursor pointer
+			&:hover
+				border-color #888
+				background-color #ddd
+		.thumb			
 			img
 				border 1px #ccc
 				border-radius 4px
@@ -81,7 +92,7 @@
 	overflow hidden
 	.product-thumbnails
 		display inline-block		
-		width 15%
+		width 10%
 		float left
 		ul
 			list-style none
@@ -92,7 +103,7 @@
 	#imagen_primary
 		display inline-block
 		float left
-		width 85%
+		width 90%
 
 .product-review-links
 	.pr-snippet-wrapper
@@ -292,6 +303,7 @@
 		display none!important
 	#galeria_full
 		display block
+		
 
 		
 @import './nuevo_comentario.styl'
