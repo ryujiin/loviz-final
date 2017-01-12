@@ -6,6 +6,10 @@ import settings
 from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token
 
+from django.contrib.sitemaps.views import sitemap
+from catalogo.sitemap import *
+
+
 
 from django.contrib import admin
 admin.autodiscover()
@@ -35,6 +39,11 @@ router.register(r'tallas',TallasViewsets,'tallas')
 router.register(r'comentarios',ComentarioViewSet,'comentarios')
 router.register(r'comentarioimgs',ComentarioImagenViewSet,'comentarios_imagenes')
 
+sitemaps ={
+    'categoria': CategoriaSitemap,
+    'productos':ProductoSitemap,
+}
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
@@ -55,10 +64,12 @@ urlpatterns = [
     url(r'^get_stripe_key/$',get_stripe_key,name='get_key'),    
     url(r'^pago/paypal/', paypal_paymet,name = 'pago_paypal'),    
     url(r'^hardcode/get/paypal/', include('paypal.standard.ipn.urls')),
-    #Dependencia
+    #Oficina
+    url(r'^oficina/',include('oficina.urls')),
     #Web
     url(r'^',include('cmsweb.urls')),
-
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
+    name='django.contrib.sitemaps.views.sitemap')
 ]
 if settings.DEBUG:
     urlpatterns = [

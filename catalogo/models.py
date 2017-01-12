@@ -102,6 +102,9 @@ class Producto(models.Model):
 		num_entrellas = Comentario.objects.filter(producto=self)
 		return num_entrellas
 
+	def get_absolute_url(self):
+		return "/producto/%s/" % self.slug
+
 class Categoria(models.Model):
 	SECCIONES = (
 		('genero','Genero'),
@@ -120,6 +123,9 @@ class Categoria(models.Model):
 
 	def __unicode__(self):
 		return self.slug
+
+	def get_absolute_url(self):
+		return "/catalogo/%s/" % self.slug
 
 	def save(self, *args, **kwargs):
 		if self.padre:
