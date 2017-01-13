@@ -1,7 +1,9 @@
 {% load static from staticfiles %}
+{% load django_seo_js %}
 <!doctype html>
 <html lang="es">
 <head>
+  {% seo_js_head %}
 	<meta charset="UTF-8">
 	<title>
     {%block titulo_web%}

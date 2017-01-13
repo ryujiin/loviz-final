@@ -171,6 +171,16 @@ CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.j
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_RESTRICT_BY_USER = False
 
+#Prerender 
+MIDDLEWARE_CLASSES = (
+    'django_seo_js.middleware.EscapedFragmentMiddleware',  # If you're using #!
+    'django_seo_js.middleware.UserAgentMiddleware',  # If you want to detect by user agent
+) + MIDDLEWARE_CLASSES
+
+INSTALLED_APPS += ('django_seo_js',)
+
+SEO_JS_PRERENDER_TOKEN = config.PRERENDER_TOKEN
+
 try:
     from .local import *
 except ImportError:
