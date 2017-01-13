@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'ckeditor',
     'ckeditor_uploader',
+
     #mis apps
     'carro',
     'catalogo',
@@ -88,6 +89,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
@@ -155,6 +158,13 @@ AUTHENTICATION_BACKENDS = (
     'cliente.backends.EmailOrUsernameModelBackend',    
     'django.contrib.auth.backends.ModelBackend',
 )
+#facebook login
+SOCIAL_AUTH_FACEBOOK_KEY = config.SOCIAL_AUTH_FACEBOOK_KEY
+SOCIAL_AUTH_FACEBOOK_SECRET = config.SOCIAL_AUTH_FACEBOOK_SECRET
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email',]
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/usuario/perfil/'
 
 #Paypal IPN
 PAYPAL_RECEIVER_EMAIL = "lovizempresa@gmail.com"

@@ -56,6 +56,8 @@ urlpatterns = [
     url(r'^login/$',ingresar,name='salir'),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^api-token-auth/', obtain_jwt_token),
+    #Login
+    url('', include('social.apps.django_app.urls', namespace='social')),
     #pagos
     url(r'^pago_contraentrega/',get_pago_contraentrega,name='pago_contraentrega'),    
     url(r'^definir_pago/',definir_pago,name='definir_pago'),    
