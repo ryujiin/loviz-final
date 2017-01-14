@@ -31,6 +31,10 @@ css/iconos.css
 ----------------
 css/iconos.css
 
+css/oficina/dashboard.css
+----------------
+css/oficina/dashboard.css
+
 css/oficina.css
 ----------------
 css/oficina.css
