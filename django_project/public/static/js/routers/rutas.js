@@ -29,6 +29,10 @@ define([
         },
         root:function(){
             PaginaView.buscar_page('home');
+            var parametros = {
+                ecomm_pagetype: 'home',
+            }
+            this.send_tracker(parametros);
         },
         pagina:function (slug) {
             PaginaView.buscar_page(slug);
@@ -52,6 +56,10 @@ define([
         },
         carro_page:function () {
             PageCarro.render();
+            var parametros = {
+                ecomm_pagetype: 'cart',
+            }
+            this.send_tracker(parametros);
         },
         procesar_compra:function () {
             PageProcesar.verificar_render();
@@ -65,6 +73,13 @@ define([
         _pageView:function () {
             var path = Backbone.history.getFragment();
             ga('send', 'pageview', {page: "/" + path});
+        },
+        send_tracker:function (parametros) {
+            window.google_trackConversion({
+              google_conversion_id: 1017839300, 
+              google_custom_params: parametros,
+              google_remarketing_only: true
+            });
         },
         notFound:function () {
             $('body').removeClass();

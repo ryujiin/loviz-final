@@ -25,7 +25,8 @@ define([
 
         render: function () {
             var self = this;
-            this.collection.fetch().done(function (data) {                
+            this.collection.fetch().done(function (data) {
+            debugger;             
                 if (data[0].grupo==0) {
                     var texto = '<h4>Felicidades tienes envio ¡GRATIS!</h4>';
                 }else{

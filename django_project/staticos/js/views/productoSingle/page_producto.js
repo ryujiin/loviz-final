@@ -43,6 +43,7 @@ define([
             this.add_to_cart();
             this.add_comentario();
             this.add_Recomendados();
+            this.sendTrack();
         },
         get_modelo:function (slug) {
             var ajax_bloq = new LoaderFull();
@@ -127,6 +128,24 @@ define([
             var recomendados = new Recomendados({
                 el:this.$('#producto-asociado'),
                 model:this.model,
+            });
+        },
+        sendTrack:function () {
+            var categoria = ''
+            this.model.toJSON().categorias.forEach(function(e){
+                if (e.seccion=='estilo') {
+                    categoria = e.slug;
+                };
+            })
+            var parametros = {
+                ecomm_prodid:this.model.id,
+                ecomm_pagetype:categoria,
+                ecomm_totalvalue: this.model.toJSON().precio
+            }
+            window.google_trackConversion({
+              google_conversion_id: 1017839300, 
+              google_custom_params: parametros,
+              google_remarketing_only: true
             });
         }
     });
