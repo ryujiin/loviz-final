@@ -179,6 +179,7 @@ def nuevo_usuario(request):
 
 import sendgrid
 from sendgrid.helpers.mail import *
+from django.conf import settings
 
 def enviar_mail(email,nombre):
 	sg = sendgrid.SendGridAPIClient(apikey=settings.SENDGRID_API_KEY)

@@ -64,3 +64,30 @@ def felicidades(request):
 		return render_to_response('felicidades.html', {"pedido": pedido,'lineas':lineas})
 	else:
 		return redirect ('/')
+
+import mercadopago
+import json
+
+def prueba_mercado_pago(request):
+	mp = mercadopago.MP("2197077804609112", "j2yz6DWQl1EBSjxC0uve9WHFlEpLk6Wi")
+
+	preference = {
+		"items": [
+			{
+				"title": "Shingekui no ",
+				'picture_url':'https://lovizdc.com/media/cache/38/42/384233ef2917e219c9fa7c7a109eacd6.jpg',
+				"quantity": 2,
+				"currency_id": "PEN",
+				"unit_price": 40.20
+			}
+		],
+		'payer':{
+			'name':'Tu viejo Lopez',
+			'email':'prienw@kmnvi.com',
+		}
+	}
+
+	preferenceResult = mp.create_preference(preference)
+
+	return HttpResponse(json.dumps(preferenceResult, indent=4),
+					content_type='application/json;charset=utf8')

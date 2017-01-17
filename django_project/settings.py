@@ -23,7 +23,7 @@ location = lambda x: os.path.join(
 SECRET_KEY = config.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -262,6 +262,10 @@ MIDDLEWARE_CLASSES = (
 INSTALLED_APPS += ('django_seo_js',)
 
 SEO_JS_PRERENDER_TOKEN = config.PRERENDER_TOKEN
+
+#Mercado Pago
+CLIENT_ID = '2197077804609112'
+CLIENT_SECRET =  'j2yz6DWQl1EBSjxC0uve9WHFlEpLk6Wi'
 
 try:
     from .local import *

@@ -156,6 +156,7 @@ class ComentairoSerializer(serializers.ModelSerializer):
 class SuscritoSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Suscrito
+		fields = ('__all__')
 
 class MayoristaSerializer(serializers.ModelSerializer):
 	class Meta:

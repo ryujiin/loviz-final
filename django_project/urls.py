@@ -17,7 +17,7 @@ admin.autodiscover()
 from catalogo.views import CatalogoViewsets,CategoriaViewsets,ListaProductosViewsets
 from cmsweb.views import *
 from carro.views import LineasViewsets,CarroViewsets
-from cliente.views import salir,nuevo_usuario,ingresar,DireccionViewsets,ComentarioViewSet,ComentarioImagenViewSet,ClienteViewSet
+from cliente.views import salir,nuevo_usuario,ingresar,DireccionViewsets,ComentarioViewSet,ComentarioImagenViewSet,ClienteViewSet,SuscritoViewset
 from pago.views import paypal_paymet,get_stripe_key,definir_pago,stripe_paymet,retorn_paypal,get_pago_contraentrega
 from pedido.views import PedidoViewSet,MetodoEnvioViewSet
 from ubigeo.views import RegionViewset
@@ -34,6 +34,7 @@ router.register(r'metodos_envio',MetodoEnvioViewSet,'mentodos_envios')
 router.register(r'ubigeo',RegionViewset,'ubigeo')
 router.register(r'cliente/direcciones',DireccionViewsets,'direcciones')
 router.register(r'cliente/cliente',ClienteViewSet,'cliente')
+router.register(r'cliente/suscrito',SuscritoViewset,'suscritos')
 router.register(r'colores',ColorViewsets,'colores')
 router.register(r'tallas',TallasViewsets,'tallas')
 router.register(r'comentarios',ComentarioViewSet,'comentarios')
