@@ -75,7 +75,9 @@ urlpatterns = [
     name='django.contrib.sitemaps.views.sitemap')
 ]
 if settings.DEBUG:
+    import debug_toolbar
     urlpatterns = [
     url(r'^media/(?P<path>.*)$', serve,
         {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+    url(r'^debug/', include(debug_toolbar.urls)),
 ] + urlpatterns

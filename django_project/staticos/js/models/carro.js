@@ -40,8 +40,7 @@ define([
         parse: function(response, options)  {
             return response;
         },
-        buscar_carrologin:function () {
-            
+        buscar_carrologin:function () {            
             var self = this;
             //condicional si existe carro con login facebook
             var facebook = $.localStorage.get('facebook');            
@@ -86,6 +85,9 @@ define([
             var session = $.localStorage.get('session');
             if (session) {
                 this.set({sesion_carro:session})
+                if ($.cookie('session')===undefined) {
+                    $.cookie('session', session, { expires: 7, path: '/' });
+                };
             }else{
                 session = this.obt_galleta();
                 this.set({sesion_carro:session})
@@ -95,10 +97,12 @@ define([
         obt_galleta : function(){
             var galleta = $.localStorage.get('session');
             if (galleta==null) {
-                console.log('veamos');
                 var session = getRandomChar();
                 $.localStorage.set({session:session});
                 galleta = session;
+                if ($.cookie('session')===undefined) {
+                    $.cookie('session', session, { expires: 7, path: '/' });
+                };
             };
             function getRandomChar() {
                 var numCara = 50

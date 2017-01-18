@@ -4,7 +4,7 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'swig'
+    'swig',
 ], function ($, _, Backbone, swig) {
     'use strict';
 

@@ -155,6 +155,8 @@ js/../js/views/usuario/page_reset_pass.js
 js/../js/routers/rutas.js
 js/../js/views/app/sidebar_overlay.js
 js/../js/views/usuario/user_links.js
+js/../js/models/suscrito.js
+js/../js/views/app/bloque_suscrito.js
 js/../js/views/app.js
 js/../js/views/cms/head.js
 js/main.js

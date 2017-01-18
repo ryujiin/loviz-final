@@ -7,8 +7,9 @@ define([
     '../views/carro/minicarro',
     'carro_main',
     '../views/usuario/user_links',  
-    '../models/user'
-], function ($, _, Backbone,CarroView,CarroModel,UserLinkView,UserModel) {
+    '../models/user',
+    '../views/app/bloque_suscrito',      
+], function ($, _, Backbone,CarroView,CarroModel,UserLinkView,UserModel,BloqueSuscrito) {
     'use strict';
 
     var AppView = Backbone.View.extend({
@@ -30,15 +31,12 @@ define([
             var mini_carro = new CarroView({
                 model:CarroModel
             });
+            var bloque_suscrito = new BloqueSuscrito({
+                el:$('#suscribirse'),
+            })
         },
         mostrar_navegador_mobil:function (e) {
             $('#navigation').toggleClass('is_activo');
-        },
-        addBloqueSuscrito:function () {
-            var bloque_suscrito = new BloqueSuscrito({
-                el:$('#suscribirse'),
-                model:new ModelSuscrito(),
-            })
         },
         navegar_modal:function (e) {
             e.preventDefault();

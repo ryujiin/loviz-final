@@ -4,13 +4,16 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'swig'
-], function ($, _, Backbone, swig) {
+    'swig',
+    '../../models/suscrito',
+], function ($, _, Backbone, swig, SuscritoModel) {
     'use strict';
 
     var SuscritoView = Backbone.View.extend({
 
         tagName: 'div',
+
+        model: new SuscritoModel(),
 
         id: '',
 
