@@ -51,9 +51,8 @@ define([
                     this.fetch({
                         data:$.param({c_f:carro})
                     }).done(function (data) {
-                        debugger;
-                        //self.set({propietario:UserModel.id});
-                        //self.save()
+                        self.set({propietario:UserModel.id});
+                        self.save()
                     })                    
                 }else{
                     this.fetch().done(function(data){      

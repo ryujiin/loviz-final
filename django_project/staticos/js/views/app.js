@@ -22,6 +22,7 @@ define([
             'click .link-modal':'navegar_modal',
             'click .footer-block-menu h4':'menu_activo',
             'click .footer-block-menu h4.activo':'menu_desactivo',
+            'click .btn-facebook':'guardar_session_carro_facebok'
         },
 
         initialize: function () {
@@ -61,6 +62,12 @@ define([
         },
         no_navegar:function (e) {
             e.preventDefault();            
+        },
+        guardar_session_carro_facebok:function  (e) {
+            e.preventDefault();
+            $.localStorage.set('facebook',true);
+            window.location.href = e.target.pathname;
+
         }
     });
 

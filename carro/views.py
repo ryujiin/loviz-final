@@ -87,11 +87,12 @@ class LineasViewsets(viewsets.ModelViewSet):
 		carro_session = request.COOKIES.get('session')
 		carro = request.data['carro']
 		carro_server = Carro.objects.get(pk=carro)
+		print carro_server
 		if carro_server.propietario:
 			if self.request.user.is_authenticated():
 				if self.request.user == carro_server.propietario:
 					perfecto = True
-		elif carro_server.session == carro_session:
+		elif carro_server.sesion_carro == carro_session:
 			perfecto = True
 		serializer = LineaSerializer(data=request.data)		
 		if perfecto:
