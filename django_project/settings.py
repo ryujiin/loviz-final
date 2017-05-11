@@ -27,6 +27,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+#comenzamon nueva rama
+
 
 # Application definition
 
