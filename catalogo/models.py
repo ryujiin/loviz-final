@@ -9,6 +9,9 @@ from material.models import Material,PrecioMaterial
 from datetime import datetime, timedelta, time
 from django.utils import timezone
 
+from django.conf import settings
+
+
 # Create your models here.
 class Producto(models.Model):
 	nombre = models.CharField(max_length=120,blank=True,null=True)
@@ -38,7 +41,7 @@ class Producto(models.Model):
 	def get_thum(self):
 		img = ProductoImagen.objects.filter(producto=self).order_by('pk')[0]
 		img = get_thumbnail(img.foto, '450x350', quality=80)
-		return img
+		return '%s%s'  %(settings.SITE_NAME,img.url)
 
 	def guardar_oferta(self):
 		oferta = self.get_en_oferta()
@@ -146,11 +149,6 @@ class ProductoVariacion(models.Model):
 
 	def __unicode__(self):
 		return "%s - %s" %(self.producto,self.precio_minorista)
-
-	#def get_precio_venta(self):
-		#descuento= self.precio_minorista*self.oferta/100
-		#precio = self.precio_minorista - descuento
-		#return precio
 
 	def get_precio(self):
 		if self.precio_oferta:

@@ -9,11 +9,13 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from catalogo.models import *
 from django.contrib.auth.models import User as User
-from pedido.models import Pedido
+from pedido.models import Pedido,MetodoPago,Pago
 from cliente.models import CuponesCliente
 from django.template.defaultfilters import slugify
 
 from decimal import Decimal
+
+import uuid
 
 class Carro(models.Model):
 	ABIERTO, FUCIONADA, GUARDADA, CONGELADA, ENVIADA = (
@@ -68,6 +70,11 @@ class Carro(models.Model):
 				costo_envio = self.pedido.metodoenvio.precio
 		return costo_envio
 
+	def getToken(self):
+		token = ''
+		token = uuid.uuid4().hex
+		return token
+
 	def save(self, *args, **kwargs):
 		if self.propietario:
 			self.sesion_carro = 'carro de %s ya no hay cookie%s' %(self.propietario,self.id)
@@ -75,6 +82,8 @@ class Carro(models.Model):
 				pedido = Pedido(user=self.propietario,estado_pedido='autenticado',)
 				pedido.save()
 				self.pedido = pedido
+		else:
+			self.sesion_carro = self.getToken()
 		super(Carro, self).save(*args, **kwargs)		
 		if self.estado=='Abierto':
 			if self.propietario:
@@ -151,3 +160,51 @@ class LineaCarro(models.Model):
 					coincidencias.delete()
 					self.cantidad = coincidencias.cantidad+self.cantidad
 				super(LineaCarro, self).save(*args, **kwargs)
+
+
+from paypal.standard.models import ST_PP_COMPLETED
+from paypal.standard.ipn.signals import valid_ipn_received
+from utiles.models import TipoCambio
+
+def show_me_the_money(sender, **kwargs):
+	ipn_obj = sender
+	
+	if ipn_obj.payment_status == ST_PP_COMPLETED:
+
+		pedido = Pedido.objects.get(numero_pedido=ipn_obj.invoice)
+		carro = Carro.objects.get(pedido=pedido.pk)
+		total = carro.total_carro()
+		today = datetime.now().date()
+		tipos_cambio = TipoCambio.objects.filter(fecha=today)
+		metodo = MetodoPago.objects.get(nombre='Paypal')
+
+		pago = Pago(cantidad=ipn_obj.mc_gross,
+					id_pago=ipn_obj.txn_id,
+					metodo_pago=metodo,
+					transaccion=ipn_obj.invoice)
+		if ipn_obj.receiver_email != settings.PAYPAL_RECEIVER_EMAIL:
+			pago.descripcion = 'Ocurrio un Error en el email de receptor'
+			pago.save()
+			return
+		
+		for tipo in tipos_cambio:
+			tipo_cambio = tipo.cambio
+
+		tipo_cambio = round(tipo_cambio,2)		
+		total_dolares = round(total/tipo_cambio,2)
+
+		if ipn_obj.mc_gross == total_dolares and ipn_obj.mc_currency == 'USD':
+			pago.valido = True
+			pago.descripcion = 'Todo Perfecto'
+		else:
+			pago.descripcion = 'El pago tiene datos incorrectos'
+
+		pago.save()
+		pedido.pago_pedido = pago
+		pedido.metodo_pago = metodo
+		pedido.save()
+
+		carro.estado = carro.ENVIADA
+		carro.save()
+
+valid_ipn_received.connect(show_me_the_money)

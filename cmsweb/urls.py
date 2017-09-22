@@ -5,6 +5,7 @@ from pedido.views import felicidades,prueba_mercado_pago
 
 urlpatterns = [
 	url(r'^$',HomeView.as_view() , name='index'),
+	url(r'^get_token/',get_csrf_token , name='get_token'),
 	#url(r'^sitemap\.xml$', 'cmsweb.views.sitemap',name='sitemap'),
 	#url(r'^ingresar/$',TiendaView.as_view() , name='ingresar'),
 	url(r'^catalogo/',HomeView.as_view() , name='catalogo'),

@@ -40,7 +40,7 @@ class PerfilUserViewSet(APIView):
 		serializer = UsuarioSerializer(perfil)
 		return Response(serializer.data)
 
-
+#No usados
 class ClienteViewSet(viewsets.ModelViewSet):
 	permission_classes = (IsAuthenticated,)	
 	serializer_class = ClienteSerializer
@@ -71,29 +71,6 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 		return (AllowAny() if self.request.method == 'POST'
 			else IsStaffOrTargetUser()),
 
-class ComentarioImagenViewSet(viewsets.ModelViewSet):
-	serializer_class = ComentarioImagenSerializer
-	queryset = ComentarioImagen.objects.all()
-
-
-class ComentarioViewSet(viewsets.ModelViewSet):
-	serializer_class = ComentairoSerializer
-
-	def get_queryset(self):
-		queryset = Comentario.objects.all().order_by('-pk')
-		producto = self.request.query_params.get('producto', None)
-		if producto is not None:
-			queryset = Comentario.objects.filter(producto=producto).order_by('-pk')
-		return queryset
-
-	def create(self, request):
-		if request.user.is_authenticated:
-			request.data['usuario'] = request.user.pk
-		serializer = ComentairoSerializer(data=request.data)
-		if serializer.is_valid():
-			serializer.save()
-			return Response(serializer.data, status=status.HTTP_201_CREATED)
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class DireccionViewsets(viewsets.ModelViewSet):
 	serializer_class = DireccionSerilizer
@@ -103,6 +80,16 @@ class DireccionViewsets(viewsets.ModelViewSet):
 		if self.request.user.is_authenticated():
 			queryset = Direccion.objects.filter(usuario=self.request.user)
 			return queryset
+
+	def create(self, request):
+		print request.data
+		if request.user.is_authenticated:
+			request.data['usuario'] = request.user.pk
+		serializer = DireccionSerilizer(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 		
 class SuscritoViewset(viewsets.ModelViewSet):
 	serializer_class = SuscritoSerializer
@@ -158,22 +145,26 @@ def salir(request):
 @csrf_exempt
 def nuevo_usuario(request):
 	if request.method=='POST':
-		user = User.objects.create_user(username=request.POST['username'],
-										email=request.POST['username'],
-										password=request.POST['password'],
-										first_name=request.POST['nombre'],
-										last_name=request.POST['apellido'])
-		if user:
-			cliente = Cliente(usuario=user)
-			cliente.save()
-			email = request.POST['username']
-			nombre ="%s %s" %(request.POST['nombre'],request.POST['apellido'])
-			enviar_mail(email,nombre)
-			return HttpResponse(json.dumps({'creado':True}),
+		datos = json.loads(request.body)
+
+		usuario = User.objects.filter(username=datos['email'])
+
+		if usuario:
+			return HttpResponse(json.dumps({'creado':False,'detail':'El usuario ya esta registrado'}),
 					content_type='application/json;charset=utf8')			
 		else:
-			return HttpResponse(json.dumps({'creado':False}),
-					content_type='application/json;charset=utf8')
+			user = User.objects.create_user(username=datos['email'],email=datos['email'],password=datos['pass'],first_name=datos['nombre'],last_name=datos['apellido'])
+			if user:
+				cliente = Cliente(usuario=user)
+				cliente.save()
+				#email = request.POST['username']
+				#nombre ="%s %s" %(request.POST['nombre'],request.POST['apellido'])
+				#enviar_mail(email,nombre)
+				return HttpResponse(json.dumps({'creado':True}),
+						content_type='application/json;charset=utf8')			
+			else:
+				return HttpResponse(json.dumps({'creado':False}),
+						content_type='application/json;charset=utf8')
 	else:
 		raise Http404
 

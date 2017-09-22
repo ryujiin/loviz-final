@@ -49,9 +49,8 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'paypal.standard.ipn',
     'corsheaders',
-    'ckeditor',
-    'ckeditor_uploader',
     #mis apps
+    'comentario',
     'carro',
     'catalogo',
     'cliente',
@@ -149,9 +148,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
 }
 
@@ -175,8 +174,12 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/usuario/perfil/'
 
 #Paypal IPN
-PAYPAL_RECEIVER_EMAIL = "lovizempresa@gmail.com"
+PAYPAL_RECEIVER_EMAIL = "admin@lovizdc.com"
 PAYPAL_TEST = True
+PAYPAL_URL_FRONT_RETURN = '//lovizdc.com/felicidades/'
+PAYPAL_URL_CANCEL_RETURN = '//lovizdc.com/que_paso/'
+API_CURRENCY = '8649067b661349a8b2f2f2fa135246cf'
+
 
 EMAIL_BACKEND = "sgbackend.SendGridBackend"
 SENDGRID_API_KEY = config.SENDGRID_API_KEY
@@ -184,77 +187,6 @@ SENDGRID_API_KEY = config.SENDGRID_API_KEY
 CORS_ORIGIN_ALLOW_ALL = True
 
 DEFAULT_FROM_EMAIL = 'admin@lovizdc.com'
-
-#CKEDITOR
-
-CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
-CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_RESTRICT_BY_USER = False
-
-CKEDITOR_CONFIGS = {
-    'default': {
-        'skin': 'moono',
-        # 'skin': 'office2013',
-        'toolbar_Basic': [
-            ['Source', '-', 'Bold', 'Italic']
-        ],
-        'toolbar_YourCustomToolbarConfig': [
-            {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
-            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
-            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
-            {'name': 'forms',
-             'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
-                       'HiddenField']},
-            '/',
-            {'name': 'basicstyles',
-             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
-            {'name': 'paragraph',
-             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
-                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
-                       'Language']},
-            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
-            {'name': 'insert',
-             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
-            '/',
-            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
-            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
-            {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
-            {'name': 'about', 'items': ['About']},
-            '/',  # put this to force next toolbar on new line
-            {'name': 'yourcustomtools', 'items': [
-                # put the name of your editor.ui.addButton here
-                'Preview',
-                'Maximize',
-
-            ]},
-        ],
-        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
-        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
-        # 'height': 291,
-        # 'width': '100%',
-        # 'filebrowserWindowHeight': 725,
-        # 'filebrowserWindowWidth': 940,
-        # 'toolbarCanCollapse': True,
-        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
-        'tabSpaces': 4,
-        'extraPlugins': ','.join(
-            [
-                # your extra plugins here
-                'div',
-                'autolink',
-                'autoembed',
-                'embedsemantic',
-                'autogrow',
-                # 'devtools',
-                'widget',
-                'lineutils',
-                'clipboard',
-                'dialog',
-                'dialogui',
-                'elementspath'
-            ]),
-    }
-}
 
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
@@ -282,8 +214,48 @@ INSTALLED_APPS += ('django_seo_js',)
 SEO_JS_PRERENDER_TOKEN = config.PRERENDER_TOKEN
 
 #Mercado Pago
-CLIENT_ID = '2197077804609112'
-CLIENT_SECRET =  'j2yz6DWQl1EBSjxC0uve9WHFlEpLk6Wi'
+CLIENT_ID = config.CLIENT_ID
+CLIENT_SECRET =  config.CLIENT_SECRET
+
+DOMINIO = 'https/'
+
+import datetime
+
+JWT_AUTH = {
+    'JWT_ENCODE_HANDLER':
+    'rest_framework_jwt.utils.jwt_encode_handler',
+
+    'JWT_DECODE_HANDLER':
+    'rest_framework_jwt.utils.jwt_decode_handler',
+
+    'JWT_PAYLOAD_HANDLER':
+    'rest_framework_jwt.utils.jwt_payload_handler',
+
+    'JWT_PAYLOAD_GET_USER_ID_HANDLER':
+    'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
+
+    'JWT_RESPONSE_PAYLOAD_HANDLER':
+    'rest_framework_jwt.utils.jwt_response_payload_handler',
+
+    'JWT_SECRET_KEY': config.SECRET_KEY,
+    'JWT_GET_USER_SECRET_KEY': None,
+    'JWT_PUBLIC_KEY': None,
+    'JWT_PRIVATE_KEY': None,
+    'JWT_ALGORITHM': 'HS256',
+    'JWT_VERIFY': True,
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_LEEWAY': 0,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3600),
+    'JWT_AUDIENCE': None,
+    'JWT_ISSUER': None,
+
+    'JWT_ALLOW_REFRESH': False,
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    'JWT_AUTH_COOKIE': None,
+
+}
 
 try:
     from .local import *

@@ -60,6 +60,16 @@ class ListaProductosViewsets(viewsets.ReadOnlyModelViewSet):
 			queryset = queryset[:limite]
 		return queryset
 
+class ProductoCalificacionPromedioViewsets(viewsets.ReadOnlyModelViewSet):
+	serializer_class = ProductoCalificacionPromedioSerializer
+
+	def get_queryset(self):
+		queryset = Producto.objects.filter(activo=True).order_by('-actualizado')		
+		slug = self.request.query_params.get('slug',None)
+		if slug:
+			queryset = queryset.filter(slug=slug)
+		return queryset
+
 #from drf_haystack.viewsets import HaystackViewSet
 ##aun no se usa la busqueda mas adelante derrepente
 #class ProductoBusquedaView(HaystackViewSet):

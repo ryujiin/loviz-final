@@ -24,7 +24,7 @@ class ProductoAdmin(admin.ModelAdmin):
 	list_display = ('id','foto_producto','full_name','nombre','slug','activo','creado','actualizado','guardar_novedad')
 
 	def foto_producto(self, obj):
-		url = obj.get_thum().url
+		url = obj.get_thum()
 		tag = '<img src="%s" width="50">' % url
 		return tag
 	foto_producto.allow_tags = True

@@ -14,31 +14,39 @@ from catalogo.sitemap import *
 from django.contrib import admin
 admin.autodiscover()
 
-from catalogo.views import CatalogoViewsets,CategoriaViewsets,ListaProductosViewsets
+from catalogo.views import CatalogoViewsets,CategoriaViewsets,ListaProductosViewsets,ProductoCalificacionPromedioViewsets
 from cmsweb.views import *
 from carro.views import LineasViewsets,CarroViewsets
-from cliente.views import salir,nuevo_usuario,ingresar,DireccionViewsets,ComentarioViewSet,ComentarioImagenViewSet,ClienteViewSet,SuscritoViewset
+from cliente.views import salir,nuevo_usuario,ingresar,DireccionViewsets,ClienteViewSet,SuscritoViewset
+from comentario.views import ComentarioViewSet,ComentarioImagenViewSet
 from pago.views import paypal_paymet,get_stripe_key,definir_pago,stripe_paymet,retorn_paypal,get_pago_contraentrega
-from pedido.views import PedidoViewSet,MetodoEnvioViewSet
+from pedido.views import PedidoViewSet,MetodoEnvioViewSet,MetodoPagoViewSet,PedidoViewsApi
 from ubigeo.views import RegionViewset
 from utiles.views import ColorViewsets,TallasViewsets
 
 router = DefaultRouter()
 router.register(r'productos', CatalogoViewsets,'productos')
-router.register(r'lista_productos', ListaProductosViewsets,'lista_productos')
+#router.register(r'lista_productos', ListaProductosViewsets,'lista_productos')
 router.register(r'categoria', CategoriaViewsets,'categorias')
-router.register(r'cms/paginas', PaginaViewsets,'paginas')
 router.register(r'carro/lineas', LineasViewsets,'lineas')
 router.register(r'pedidos', PedidoViewSet,'pedidos')
-router.register(r'metodos_envio',MetodoEnvioViewSet,'mentodos_envios')
-router.register(r'ubigeo',RegionViewset,'ubigeo')
 router.register(r'cliente/direcciones',DireccionViewsets,'direcciones')
+router.register(r'ubigeo',RegionViewset,'ubigeo')
+router.register(r'metodos_envio',MetodoEnvioViewSet,'mentodos_envios')
+router.register(r'metodos_pago',MetodoPagoViewSet,'mentodos_pago')
+router.register(r'producto/comentario_promedio',ProductoCalificacionPromedioViewsets,'comentario_promedio')
+router.register(r'comentarios',ComentarioViewSet,'comentarios')
+router.register(r'comentarioimgs',ComentarioImagenViewSet,'comentarios_imagenes')
+
+router.register(r'cms/paginas', PaginaViewsets,'paginas')
 router.register(r'cliente/cliente',ClienteViewSet,'cliente')
 router.register(r'cliente/suscrito',SuscritoViewset,'suscritos')
 router.register(r'colores',ColorViewsets,'colores')
 router.register(r'tallas',TallasViewsets,'tallas')
-router.register(r'comentarios',ComentarioViewSet,'comentarios')
-router.register(r'comentarioimgs',ComentarioImagenViewSet,'comentarios_imagenes')
+#Loviz 2.0
+router.register(r'cms/hero_home',HeroHomeViewsets,'Hero Home')
+
+
 
 sitemaps ={
     'categoria': CategoriaSitemap,
@@ -47,9 +55,10 @@ sitemaps ={
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^api/', include(router.urls)),
-    url(r'^api/carro/', include('carro.urls')),       
+    url(r'^api/carro/', include('carro.urls')),
+    url(r'^api/pedido/actual/',PedidoViewsApi.as_view()),
+
     #Usauario 
     url(r'^api/user/', include('cliente.urls')),        
     url(r'^ajax/crear/', nuevo_usuario, name='nuevo_usuario'),    

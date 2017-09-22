@@ -9,12 +9,16 @@ class PagoAdmin(admin.ModelAdmin):
 	list_display = ('id','__unicode__','fecha')
 
 class MetodoEnvioAdmin(admin.ModelAdmin):
-	filter_horizontal = ('restricciones',)	
-	list_display = ('nombre','descripcion','precio','grupo')
+	list_display = ('nombre','descripcion','precio','grupo_metodo')
+
+class GrupoMetodoEnvioAdmin(admin.ModelAdmin):
+	filter_horizontal = ('restricciones','exepciones')
+	list_display = ('nombre',)
 
 admin.site.register(Pedido,PedidoAdmin)
 admin.site.register(ModificacionPedido)
 admin.site.register(EstadoPedido)
 admin.site.register(MetodoEnvio,MetodoEnvioAdmin)
 admin.site.register(MetodoPago)
+admin.site.register(GrupoMetodoEnvio,GrupoMetodoEnvioAdmin)
 admin.site.register(Pago,PagoAdmin)

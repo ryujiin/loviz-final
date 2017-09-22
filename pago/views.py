@@ -20,14 +20,18 @@ from paypal.standard.forms import PayPalPaymentsForm
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 
+import json
+
 # Create your views here.
+@csrf_exempt
 def stripe_paymet(request):
 	stripe.api_key = settings.STRIPE_SECRET_KEY
 	
 	if request.method == 'POST':
+		datos = json.loads(request.body)
 		try:
-			card_token = request.POST['stripeToken']
-			carro_id = request.POST['carro']
+			card_token = datos['stripeToken']
+			carro_id = datos['carro']
 		except KeyError:
 			return HttpResponseBadRequest('stripeToken not set')
 		currency = getattr(settings, 'SHOP_CURRENCY', 'usd')
@@ -61,6 +65,7 @@ def stripe_paymet(request):
 						metodo_pago = metodo,
 						transaccion = card_token)
 			pago.save()
+			#Grabar PEdido
 			pedido.pago_pedido = pago
 			pedido.metodo_pago = metodo
 			pedido.save()
@@ -90,12 +95,12 @@ def get_tipo_cambio():
 	return tipo_cambio
 
 def paypal_paymet(request):
+	carro = request.GET.get('carro', False)
 	pedido = request.GET.get('pedido', False)
-	#tipo_cambio = round(get_tipo_cambio(),2)
-	tipo_cambio = round(3.345,2)
-	if pedido:
+	tipo_cambio = round(get_tipo_cambio(),2)
+	if carro:
 		try:
-			carro = Carro.objects.get(pedido__numero_pedido = pedido)
+			carro = Carro.objects.get(pk = carro)
 		except Carro, DoesNotExist:
 			raise Http404('No hay pedido en el carro')
 		total_carro = carro.total_carro()
@@ -104,11 +109,13 @@ def paypal_paymet(request):
 		paypal_dict = {
 			"business": settings.PAYPAL_RECEIVER_EMAIL,
 			"amount": total_dolares,
-			"item_name": "productos LovizDC",
+			"item_name": "Productos de LovizDC.com",
 			"invoice": pedido,
-			"notify_url": settings.SITE_NAME + reverse('paypal-ipn'),
-			"return_url": "%s/retorno_paypal/%s/" %(settings.SITE_NAME,pedido),
-			"cancel_return": "%s/cancelado_paypal/%s/" %(settings.SITE_NAME,pedido),
+			#"notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+			"notify_url": 'http://b58d7bbd.ngrok.io/hardcode/get/paypal/',
+			"return_url": "%s/%s/" %(settings.PAYPAL_URL_FRONT_RETURN,pedido),
+			#"return_url": "%s/retorno_paypal/%s/" %(settings.SITE_NAME,pedido),
+			"cancel_return": "%s/%s/" %(settings.PAYPAL_URL_CANCEL_RETURN,pedido),
 			"custom": "Comprando los mejores productos!",  # Custom command to correlate to some function later (optional)
 			}
 		form = PayPalPaymentsForm(initial=paypal_dict)
@@ -122,28 +129,9 @@ from django.shortcuts import redirect
 
 @csrf_exempt
 def retorn_paypal(request):
-	if request.POST:
-		metodo = MetodoPago.objects.get(nombre='Paypal')
-		pedido = Pedido.objects.get(numero_pedido=request.POST['invoice'])
-		carro = Carro.objects.get(pedido=pedido.pk) 
+	if request.GET:
 
-		pago = Pago(cantidad=request.POST['payment_gross'],
-				id_pago = request.POST['invoice'],
-				metodo_pago = metodo,
-				descripcion = request.POST['payment_status'],
-				transaccion = request.POST['txn_id'])			
-		pago.save()
-
-		pedido.pago_pedido = pago
-		pedido.metodo_pago = metodo
-		pedido.save()
-		
-		carro.estado = carro.ENVIADA
-		carro.save()
-		
-		request.session['pedido'] = request.POST['invoice'];
-
-		return HttpResponseRedirect(reverse('felicidades'))
+		return HttpResponseRedirect(settings.PAYPAL_URL_FRONT_RETURN)
 
 def get_pago_contraentrega(request):
 	if request.POST:

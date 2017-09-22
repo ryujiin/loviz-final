@@ -18,7 +18,7 @@ class CarritoViewsApi(APIView):
 	def get_object(self):
 		coockie_carro = self.request.GET.get('session')
 		if self.request.user.is_authenticated():
-			carro_fijo = self.request.GET.get('c_f')
+			carro_fijo = self.request.GET.get('carro_fronted')
 			if carro_fijo:
 				carro = Carro.objects.get(pk=carro_fijo,estado="Abierto")
 				carro.propietario = self.request.user								
@@ -58,16 +58,38 @@ class CarritoDetailViews(APIView):
 
 	def get(self, request, pk, format=None):
 		carro = self.get_object(pk)
-		serializer = CarroSerializer(carro)
-		return Response(serializer.data)
+		if carro.propietario:
+			#El carro esta protejido para q lo vea su propietario cuando tiene
+			if carro.propietario.id == request.user.id:
+				serializer = CarroSerializer(carro)
+				return Response(serializer.data)
+			else:
+				return Response({'detail':'El carro no te pertenece'}, status=status.HTTP_400_BAD_REQUEST)
+		else:			
+			serializer = CarroSerializer(carro)
+			return Response(serializer.data)
 
 	def put(self, request, pk, format=None):
 		carro = self.get_object(pk)
-		serializer = CarroSerializer(carro,data=request.data)
-		if serializer.is_valid():
-			serializer.save()
-			return Response (serializer.data)
-		return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+		print request.user.id
+		if request.user.is_authenticated():
+			print 'esta logueado'
+		if carro.propietario:
+			#El carro esta protejido para q lo vea su propietario cuando tiene
+			if carro.propietario.id == request.user.id:
+				serializer = CarroSerializer(carro,data=request.data)
+				if serializer.is_valid():
+					serializer.save()
+					return Response (serializer.data)
+				return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+			else:
+				return Response({'detail':'El carro no te pertenece'}, status=status.HTTP_400_BAD_REQUEST)
+		else:
+			serializer = CarroSerializer(carro,data=request.data)
+			if serializer.is_valid():
+				serializer.save()
+				return Response (serializer.data)
+			return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
 class LineasViewsets(viewsets.ModelViewSet):
@@ -84,10 +106,9 @@ class LineasViewsets(viewsets.ModelViewSet):
 
 	def create(self,request):
 		perfecto = False
-		carro_session = request.COOKIES.get('session')
+		carro_session = request.data['sesion_carro']
 		carro = request.data['carro']
 		carro_server = Carro.objects.get(pk=carro)
-		print carro_server
 		if carro_server.propietario:
 			if self.request.user.is_authenticated():
 				if self.request.user == carro_server.propietario:
@@ -95,6 +116,7 @@ class LineasViewsets(viewsets.ModelViewSet):
 		elif carro_server.sesion_carro == carro_session:
 			perfecto = True
 		serializer = LineaSerializer(data=request.data)		
+		print perfecto
 		if perfecto:
 			if serializer.is_valid():
 				serializer.save()

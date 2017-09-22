@@ -14,15 +14,15 @@ class Pedido(models.Model):
 	AUTENTICADO, METODO_ENVIO, METODO_PAGO,ESPERANDO_PAGO, PAGADO, ERROR_PAGO, ESPERANDO_ENVIO, ENVIADO, DEVUELTO,FUSIONADO = (
         "autenticado", "metodo_envio", "metodo_pago",'esperando_pago', "pagado", "error_pago", "esperando_envio", "enviado", "devuelto","fucionado")
 	ESTADO_ELECCION = (
-        (AUTENTICADO, _("Autenticado - El usuario se encuentra autenticado y el pedido le pertenece")),
-        (METODO_ENVIO, _("Metodo de Envio - Ya coloco el metodo de envio, esperando metodo de pago")),
-        (METODO_PAGO, _("Metodo de Pago - Ya selecciono el metodo de pago")),
-        (ESPERANDO_PAGO, _("Esperando Pago - Ya selecciono el metodo de pago, pero aun esta esperandose el pago")),
-        (PAGADO, _("Pagado - El pago se realizo correctamente, espere el envio del producto")),
-        (ERROR_PAGO, _("Error en Pago - Ocurrio un error al pagar")),
-        (ENVIADO, _("Enviado - El producto fue enviado")),
-        (DEVUELTO, _("Devuelto - El producto fue devuelto")),
-        (FUSIONADO, _("Fusionado - Este Pedido se Fusiono con otro pedido")),
+        (AUTENTICADO, _("<b>Autenticado</b> - Usted se encuentra idenficado en la plataforma")),
+        (METODO_ENVIO, _("<b>Metodo de Envio</b> - Ya selecciono el metodo de envio, esperando metodo de pago")),
+        (METODO_PAGO, _("<b>Metodo de Pago</b> - Ya selecciono el metodo de pago")),
+        (ESPERANDO_PAGO, _("<b>Esperando Pago</b> - Ya selecciono el metodo de pago, pero aun no se realiza el pago")),
+        (PAGADO, _("<b>Pagado</b> - El pago se realizo correctamente, espere el envio del producto")),
+        (ERROR_PAGO, _("<b>Error en Pago</b> - Ocurrio un error al pagar")),
+        (ENVIADO, _("<b>Enviado</b> - El producto fue enviado")),
+        (DEVUELTO, _("<b>Devuelto</b> - El producto fue devuelto")),
+        (FUSIONADO, _("<b>Fusionado</b> - Este Pedido se Fusiono con otro pedido")),
     )
 	numero_pedido = models.CharField(max_length=120,blank=True,null=True)
 	user = models.ForeignKey(User,related_name='Pedido', null=True,blank=True)
@@ -81,20 +81,29 @@ class EstadoPedido(models.Model):
 
 class MetodoEnvio(models.Model):
 	nombre = models.CharField(max_length=100)
+	icono = models.CharField(max_length=20,blank=True)
 	descripcion = models.TextField(blank=True,null=True)
 	precio = models.DecimalField(decimal_places=2,max_digits=12)
-	restricciones = models.ManyToManyField(Ubigeo,blank=True,help_text='Solo en este lugar esta habilitado',related_name='restricciones_solo')
-	exepciones = models.ManyToManyField(Ubigeo,blank=True,help_text='Menos en este esta habilitado',related_name='restricciones_menos')	
-	restriccion_precio = models.DecimalField(decimal_places=2,max_digits=12,default=0,help_text='Todo precio mayor que ese numero lo habilita')
-	grupo = models.PositiveIntegerField(default=0)
-
+	grupo_metodo = models.ForeignKey('GrupoMetodoEnvio',blank=True,null=True)
 
 	def __unicode__(self):
 		return "%s - S/.%s" %(self.nombre, self.precio)
 
+class GrupoMetodoEnvio(models.Model):
+	nombre = models.CharField(max_length=100)
+	descripcion = models.TextField(blank=True,null=True)
+	restricciones = models.ManyToManyField(Ubigeo,blank=True,help_text='Solo en este lugar esta habilitado',related_name='restricciones_solo')
+	exepciones = models.ManyToManyField(Ubigeo,blank=True,help_text='Menos en este esta habilitado',related_name='restricciones_menos')	
+	restriccion_precio = models.DecimalField(decimal_places=2,max_digits=12,default=0,help_text='Todo precio mayor que ese numero lo habilita')	
+
+	def __unicode__(self):
+		return self.nombre
+
 class MetodoPago(models.Model):
 	nombre = models.CharField(max_length=100,blank=True,null=True)
+	titulo = models.CharField(max_length=100,blank=True,null=True)
 	descripcion =models.TextField(blank=True,null=True)
+	img = models.ImageField(upload_to='tienda',blank=True)
 
 	def __unicode__(self):
 		return self.nombre
@@ -106,23 +115,24 @@ class Pago(models.Model):
 	metodo_pago = models.ForeignKey(MetodoPago,blank=True,null=True)
 	descripcion = models.CharField(max_length=100,blank=True,null=True)
 	transaccion = models.CharField(max_length=100,blank=True,null=True)
+	valido = models.BooleanField(default=False)
 
 	def __unicode__(self):
 		return self.id_pago
 
 
 
-from paypal.standard.models import ST_PP_COMPLETED
-from paypal.standard.ipn.signals import valid_ipn_received,payment_was_successful
-
-def show_me_the_money(sender, **kwargs):
-	ipn_obj = sender
-	if ipn_obj.payment_status == ST_PP_COMPLETED:
-		if ipn_obj.custom == "Comprando los mejores productos!":
-			pago = Pago(cantidad = ipn_obj.mc_gross,descripcion=ipn_obj.payment_status,transaccion = ipn_obj.txn_id)
-			pago.save()
-	else:
-		print 'Salio Mal'
-
-valid_ipn_received.connect(show_me_the_money)
-payment_was_successful.connect(show_me_the_money)
+#from paypal.standard.models import ST_PP_COMPLETED
+#from paypal.standard.ipn.signals import valid_ipn_received,payment_was_successful
+#
+#def show_me_the_money(sender, **kwargs):
+	#ipn_obj = sender
+	#if ipn_obj.payment_status == ST_PP_COMPLETED:
+		#if ipn_obj.custom == "Comprando los mejores productos!":
+			#pago = Pago(cantidad = ipn_obj.mc_gross,descripcion=ipn_obj.payment_status,transaccion = ipn_obj.txn_id)
+			#pago.save()
+	#else:
+		#print 'Salio Mal'
+#
+#valid_ipn_received.connect(show_me_the_money)
+#payment_was_successful.connect(show_me_the_money)

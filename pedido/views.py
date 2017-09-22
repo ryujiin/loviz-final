@@ -26,8 +26,24 @@ class PedidoViewSet(viewsets.ModelViewSet):
 
 	def get_queryset(self):
 		if self.request.user.is_authenticated:
-			queryset = Pedido.objects.filter(user=self.request.user.pk)
+			queryset = Pedido.objects.filter(user=self.request.user.pk).order_by('-pk').exclude(estado_pedido="fucionado")
 		return queryset
+
+class PedidoViewsApi(APIView):
+	def get_object(self):
+		pedido = self.request.GET['pedido']
+		print pedido
+		try:
+			return Pedido.objects.get(numero_pedido=pedido)
+		except Carro.DoesNotExist:
+			raise Http404
+
+
+	def get(self,request,format=None):
+		pedido = self.get_object()
+		serializer = PedidoSerializer(pedido)
+		return Response(serializer.data,status=status.HTTP_200_OK)
+
 
 class MetodoEnvioViewSet(viewsets.ReadOnlyModelViewSet):
 	serializer_class = MetodoEnvioSerializer
@@ -38,16 +54,22 @@ class MetodoEnvioViewSet(viewsets.ReadOnlyModelViewSet):
 				total = Carro.objects.get(propietario=self.request.user,estado="Abierto")
 			except Carro.DoesNotExist:
 				raise Http404
-			print int(total.total_carro())
 			if int(total.total_carro())>50:
 				#si es menor q 50
-				queryset = MetodoEnvio.objects.filter(grupo=0)
+				queryset = MetodoEnvio.objects.filter(grupo_metodo=2)
 			else:
-				queryset = MetodoEnvio.objects.filter(grupo=1)
+				queryset = MetodoEnvio.objects.filter(grupo_metodo=1)
 		else:
 			queryset = MetodoEnvio.objects.filter(grupo=1)
 		return queryset.order_by('precio')
 
+class MetodoPagoViewSet(viewsets.ReadOnlyModelViewSet):
+	serializer_class = MetodoPagoSerializer
+
+	def get_queryset(self):
+		if self.request.user.is_authenticated:
+			queryset = MetodoPago.objects.all()
+		return queryset
 
 @csrf_exempt
 def felicidades(request):

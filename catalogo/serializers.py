@@ -1,8 +1,9 @@
 from rest_framework import serializers
 from models import *
 
-from cliente.models import Comentario
+from comentario.models import Comentario
 from carro.models import Carro,LineaCarro
+
 
 class CategoriaSerializer(serializers.ModelSerializer):
 	padre = serializers.CharField(read_only=True)
@@ -22,6 +23,49 @@ class CategoriaSerializer(serializers.ModelSerializer):
 			return obj.imagen.url
 		else:
 			return None
+
+class ProductoCalificacionPromedioSerializer(serializers.ModelSerializer):
+	promedio = serializers.SerializerMethodField()
+	exelente = serializers.SerializerMethodField()
+	bueno = serializers.SerializerMethodField()
+	medio = serializers.SerializerMethodField()
+	malo = serializers.SerializerMethodField()
+	peor = serializers.SerializerMethodField()
+	class Meta:
+		model = Producto
+		fields = ('id','full_name','promedio','exelente','bueno','medio','malo','peor')
+
+	def get_promedio(self,obj):
+		valoraciones = Comentario.objects.filter(producto=obj.id)
+		num = Comentario.objects.filter(producto=obj.id).count()
+		valor = 0.0
+		valoracion = 0
+		for varia in valoraciones:
+			valor = valor+varia.valoracion
+		if num!=0:
+			valoracion = valor/num
+		return valoracion
+
+	def get_exelente(self,obj):
+		num = Comentario.objects.filter(producto=obj.id,valoracion=5).count()
+		return num
+
+	def get_bueno(self,obj):
+		num = Comentario.objects.filter(producto=obj.id,valoracion=4).count()
+		return num
+
+	def get_medio(self,obj):
+		num = Comentario.objects.filter(producto=obj.id,valoracion=3).count()
+		return num
+
+	def get_malo(self,obj):
+		num = Comentario.objects.filter(producto=obj.id,valoracion=2).count()
+		return num
+
+	def get_peor(self,obj):
+		num = Comentario.objects.filter(producto=obj.id,valoracion=1).count()
+		return num
+
 
 class ProductoVariacionSerializer(serializers.ModelSerializer):
 	talla = serializers.CharField(read_only=True)
@@ -59,9 +103,8 @@ class ParienteSerialiezer(serializers.ModelSerializer):
 		fields = ('id','nombre','full_name','thum','slug')
 
 	def get_img_thum(self,obj):
-		img = obj.get_thum().url
-		return img
-
+		img = obj.get_thum()
+		return self.context['request'].build_absolute_uri(img)
 
 class ImgProductoSerializer(serializers.ModelSerializer):
 	imagen = serializers.SerializerMethodField()
@@ -72,15 +115,15 @@ class ImgProductoSerializer(serializers.ModelSerializer):
 		fields =('imagen','imagen_medium','imagen_thum','orden')
 	
 	def get_imagen(self,obj):
-		return obj.foto.url
+		return self.context['request'].build_absolute_uri(obj.foto.url)
 
 	def get_imagen_medium(self,obj):
 		url = obj.get_thum_medium().url
-		return url
+		return self.context['request'].build_absolute_uri(url)
 
 	def get_imagen_thum(self,obj):
 		url = obj.get_thum().url
-		return url
+		return self.context['request'].build_absolute_uri(url)
 
 class MaterialProductoSerializer(serializers.ModelSerializer):
 	material = serializers.CharField(read_only=True)
@@ -125,8 +168,8 @@ class ProductoSingleSereializer(serializers.ModelSerializer):
 		return precio
 		
 	def get_thum_img(self,obj):
-		thum = obj.get_thum().url
-		return thum
+		thum = obj.get_thum()
+		return self.context['request'].build_absolute_uri(thum)
 
 	def get_oferta(self,obj):
 		obj.guardar_oferta()
@@ -187,8 +230,8 @@ class ProductoListaSerializers(serializers.ModelSerializer):
 				'thum','en_oferta','precio','precio_venta','valoracion','tallas_disponibles')
 
 	def get_thum_img(self,obj):
-		thum = obj.get_thum().url
-		return thum
+		thum = obj.get_thum()
+		return self.context['request'].build_absolute_uri(thum)
 
 	def get_link(self,obj):
 		link = '/producto/%s/' %obj.slug

@@ -44,8 +44,9 @@ class LineaSerializer(serializers.ModelSerializer):
 		return obj.producto.color.nombre
 
 	def get_thum(self,obj):
-		thum = obj.producto.get_thum().url
+		thum = obj.producto.get_thum()
 		return thum
+
 
 class CarroSerializer(serializers.ModelSerializer):
 	lineas = LineaSerializer(many=True,read_only=True)

@@ -13,6 +13,9 @@ class Cliente(models.Model):
 	genero = models.CharField(max_length=100,blank=True,null=True,choices=GENEROS)
 	dni = models.CharField(max_length=10,blank=True,null=True)
 	telefono = models.CharField(max_length=11,blank=True,null=True)
+	year = models.IntegerField(default=0)
+	mes = models.IntegerField(default=0)
+	dia = models.IntegerField(default=0)
 
 class CuponesCliente(models.Model):
 	cliente =models.ForeignKey('Cliente')
@@ -46,31 +49,7 @@ class Direccion(models.Model):
 	ubigeo = models.ForeignKey(Ubigeo,max_length=100,blank=True,null=True,related_name='direccion')
 	referencia = models.CharField(max_length=200,blank=True,null=True)
 	codigo_postal = models.CharField(max_length=20,blank=True,null=True)
-	telefono = models.CharField(max_length=11,blank=True,null=True)
-
-class Comentario(models.Model):
-	TIPO = (('si','si'),('no','no'))	
-	producto = models.ForeignKey(Producto,blank=True,null=True)
-	activo = models.BooleanField(default=False)
-	variacion = models.ForeignKey(ProductoVariacion,blank=True,null=True)
-	usuario = models.ForeignKey(User, null=True,blank=True)
-	verificado = models.BooleanField(default=False)
-	valoracion = models.PositiveIntegerField(default=0)
-	titulo_comentario = models.CharField(max_length=100,blank=True,null=True)
-	comentario = models.TextField(blank=True)
-	creado = models.DateTimeField(auto_now_add=True)
-	email_invitado = models.CharField(max_length=100,blank=True,null=True)
-	recomendacion = models.CharField(max_length=10,blank=True,null=True,choices=TIPO)
-	ayuda_si = models.PositiveIntegerField(default=0)
-	ayuda_no = models.PositiveIntegerField(default=0)
-
-	def get_usuario_id(self):
-		if self.usuario:
-			return self.usuario.pk
-
-class ComentarioImagen(models.Model):
-	comentario = models.ForeignKey(Comentario,blank=True,null=True,related_name='fotos_coment')
-	foto = models.ImageField(upload_to='comentario',blank=True,null=True,max_length=250)    
+	telefono = models.CharField(max_length=15,blank=True,null=True)
 
 import sendgrid
 from sendgrid.helpers.mail import *
