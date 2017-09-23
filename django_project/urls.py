@@ -19,7 +19,7 @@ from cmsweb.views import *
 from carro.views import LineasViewsets,CarroViewsets
 from cliente.views import salir,nuevo_usuario,ingresar,DireccionViewsets,ClienteViewSet,SuscritoViewset
 from comentario.views import ComentarioViewSet,ComentarioImagenViewSet
-from pago.views import paypal_paymet,get_stripe_key,definir_pago,stripe_paymet,retorn_paypal,get_pago_contraentrega
+from pago.views import paypal_paymet,get_stripe_key,definir_pago,stripe_paymet,retorn_paypal,get_pago_contraentrega,getForm_mercado_pago
 from pedido.views import PedidoViewSet,MetodoEnvioViewSet,MetodoPagoViewSet,PedidoViewsApi
 from ubigeo.views import RegionViewset
 from utiles.views import ColorViewsets,TallasViewsets
@@ -69,13 +69,18 @@ urlpatterns = [
     #Login
     url('', include('social.apps.django_app.urls', namespace='social')),
     #pagos
-    url(r'^pago_contraentrega/',get_pago_contraentrega,name='pago_contraentrega'),    
     url(r'^definir_pago/',definir_pago,name='definir_pago'),    
-    url(r'^retorno_paypal/',retorn_paypal,name='retorn_paypal'),    
-    url(r'^pago/stripe/$',stripe_paymet,name='pago_stripe'),
-    url(r'^get_stripe_key/$',get_stripe_key,name='get_key'),    
+        #paypal
+    url(r'^retorno_paypal/(?P<pedido>[-\w]+)/$',retorn_paypal,name='retorn_paypal'),    
     url(r'^pago/paypal/', paypal_paymet,name = 'pago_paypal'),    
     url(r'^hardcode/get/paypal/', include('paypal.standard.ipn.urls')),
+        #stripe
+    url(r'^pago/stripe/$',stripe_paymet,name='pago_stripe'),
+    url(r'^get_stripe_key/$',get_stripe_key,name='get_key'),    
+        #mercado Pago
+    url(r'^get_mercado_pago/', getForm_mercado_pago, name = 'mercado_pago'),
+        #Contra Entrega
+    url(r'^pago_contraentrega/',get_pago_contraentrega,name='pago_contraentrega'),    
     #Oficina
     url(r'^oficina/',include('oficina.urls')),
     #Web

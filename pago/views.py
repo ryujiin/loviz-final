@@ -113,8 +113,8 @@ def paypal_paymet(request):
 			"invoice": pedido,
 			#"notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
 			"notify_url": 'http://b58d7bbd.ngrok.io/hardcode/get/paypal/',
-			"return_url": "%s/%s/" %(settings.PAYPAL_URL_FRONT_RETURN,pedido),
-			#"return_url": "%s/retorno_paypal/%s/" %(settings.SITE_NAME,pedido),
+			#"return_url": "%s/%s/" %(settings.PAYPAL_URL_FRONT_RETURN,pedido),
+			"return_url": "%s/retorno_paypal/%s/" %(settings.SITE_NAME,pedido),
 			"cancel_return": "%s/%s/" %(settings.PAYPAL_URL_CANCEL_RETURN,pedido),
 			"custom": "Comprando los mejores productos!",  # Custom command to correlate to some function later (optional)
 			}
@@ -128,10 +128,14 @@ def paypal_paymet(request):
 from django.shortcuts import redirect
 
 @csrf_exempt
-def retorn_paypal(request):
-	if request.GET:
+def retorn_paypal(request,pedido):
+	carro = Carro.objects.get(pedido__numero_pedido=pedido)
+	carro.estado = carro.ENVIADA
+	carro.save()
+	url = "%s/%s" %(settings.PAYPAL_URL_FRONT_RETURN,pedido)
+	return HttpResponseRedirect(url)
+	#return HttpResponse(json.dumps({'pedido':url}),content_type='application/json;charset=utf8')
 
-		return HttpResponseRedirect(settings.PAYPAL_URL_FRONT_RETURN)
 
 def get_pago_contraentrega(request):
 	if request.POST:
@@ -178,3 +182,79 @@ def definir_pago(request):
 				valor = False
 	return HttpResponse(json.dumps({'valor':valor}),content_type='application/json;charset=utf8')
 
+
+import mercadopago
+
+def getForm_mercado_pago(request):
+	mp = mercadopago.MP(settings.CLIENT_ID, settings.CLIENT_SECRET)
+
+	if request.GET['carro']:
+		try:
+			carro = Carro.objects.get(pk=request.GET['carro'])
+		except Carro.DoesNotExist:
+			carro = False
+		if carro:
+			pedido = carro.pedido
+			preference = {
+				"items": [],
+				'payer':{
+					'name':"%s %s" %(carro.propietario.first_name,carro.propietario.last_name),
+					'email':carro.propietario.email
+				},
+				'shipments':{
+					'cost':float(pedido.metodoenvio.precio),
+				}
+			}
+			for linea in carro.lineas.all():
+				item = {
+					'title':linea.producto.full_name,
+					'picture_url':linea.producto.get_thum(),
+					'quantity':linea.cantidad,
+					'currency_id':"PEN",
+					"unit_price":float(linea.get_precio())
+				}
+				preference['items'].append(item)
+			
+
+			preferenceResult = mp.create_preference(preference)
+
+			return HttpResponse(json.dumps(preferenceResult, indent=4),content_type='application/json;charset=utf8')
+		else:
+			return HttpResponse(json.dumps({'error':'No Existe Carro'}, indent=4),content_type='application/json;charset=utf8')			
+	else:
+		return HttpResponse(json.dumps({'error':'Solicitud no Valida'}, indent=4),content_type='application/json;charset=utf8')
+
+
+#items=[]
+			#for linea in carro.lineas.all():
+				#item = {
+					#'title':linea.producto.full_name,
+					#'picture_url':linea.producto.get_thum(),
+					#'quantity':linea.cantidad,
+					#'currency_id':"PEN",
+					#"unit_price":float(linea.get_precio()),
+				#}
+				#items.append(item)
+			#preference = {}
+			#preference['items']=items
+#
+			#print json.dumps(preference)
+#
+			#preferenceResult = mp.create_preference(json.dumps(preference))
+
+
+#preference = {
+				#"items": [
+					#{
+						#"title": "Shingekui no ",
+						#'picture_url':'https://lovizdc.com/media/cache/38/42/384233ef2917e219c9fa7c7a109eacd6.jpg',
+						#"quantity": 2,
+						#"currency_id": "PEN",
+						#"unit_price": 40.20
+					#}
+				#],
+				#'payer':{
+					#'name':'Tu viejo Lopez',
+					#'email':'prienw@kmnvi.com',
+				#}
+			#}

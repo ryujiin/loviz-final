@@ -1,7 +1,7 @@
 
 from django.conf.urls import  include, url
 from views import *
-from pedido.views import felicidades,prueba_mercado_pago
+from pedido.views import felicidades
 
 urlpatterns = [
 	url(r'^$',HomeView.as_view() , name='index'),
@@ -16,7 +16,7 @@ urlpatterns = [
 	url(r'^0C32D5A4FC6AB8AEAB4A438740AF06C2.txt',Verificar.as_view() , name='procesar'),
 	url(r'^p/',HomeView.as_view() , name='page_static'),
 	url(r'^felicidades/$',felicidades , name='felicidades'),
-	url(r'^prueba_mercado/$',prueba_mercado_pago , name='mercado_pago'),
+	#url(r'^prueba_mercado/$',prueba_mercado_pago , name='mercado_pago'),
 	#usuario reset
 	url(r'^usuario/reset/password/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',HomeView.as_view() , name='password_reset_confirm'),
 	#url(r'^custom/$',CustomView.as_view(), name='custom'),
