@@ -43,11 +43,6 @@ class Producto(models.Model):
 		img = get_thumbnail(img.foto, '450x350', quality=80)
 		return '%s%s'  %(settings.SITE_NAME,img.url)
 
-	def get_thum2(self):
-		img = ProductoImagen.objects.filter(producto=self, orden=1).order_by('pk')[:1].get()
-		img = get_thumbnail(img.foto, '450x350', quality=80)
-		return '%s%s'  %(settings.SITE_NAME,img.url)
-
 	def guardar_oferta(self):
 		oferta = self.get_en_oferta()
 		if oferta>0:
