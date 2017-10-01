@@ -58,7 +58,7 @@ def stripe_paymet(request):
 			return HttpResponse(json.dumps({'error',error}),
 			content_type='application/json;charset=utf8')
 		else:
-			metodo = MetodoPago.objects.get(nombre='Stripe')			
+			metodo = MetodoPago.objects.get(nombre='Stripe')            
 			pago = Pago(cantidad = amount/100,
 						id_pago=stripe_result['id'],
 						descripcion=description,
@@ -115,7 +115,7 @@ def paypal_paymet(request):
 			"notify_url": 'http://b58d7bbd.ngrok.io/hardcode/get/paypal/',
 			#"return_url": "%s/%s/" %(settings.PAYPAL_URL_FRONT_RETURN,pedido),
 			"return_url": "%s/retorno_paypal/%s/" %(settings.SITE_NAME,pedido),
-			"cancel_return": "%s/%s/" %(settings.PAYPAL_URL_CANCEL_RETURN,pedido),
+			"cancel_return": "%s" %(settings.PAYPAL_URL_CANCEL_RETURN),
 			"custom": "Comprando los mejores productos!",  # Custom command to correlate to some function later (optional)
 			}
 		form = PayPalPaymentsForm(initial=paypal_dict)
@@ -136,6 +136,12 @@ def retorn_paypal(request,pedido):
 	return HttpResponseRedirect(url)
 	#return HttpResponse(json.dumps({'pedido':url}),content_type='application/json;charset=utf8')
 
+def cancel_paypal(request,pedido):
+	#Hacer algo
+	url = "%s" %(settings.PAYPAL_URL_CANCEL_RETURN) 
+	return HttpResponseRedirect(url)
+
+
 
 def get_pago_contraentrega(request):
 	if request.POST:
@@ -149,7 +155,7 @@ def get_pago_contraentrega(request):
 				id_pago = pedido.numero_pedido,
 				metodo_pago = metodo,
 				descripcion = 'Pago contra entrega, esperando el pago cuando se envia',
-				transaccion = request.POST['transaccion'])			
+				transaccion = request.POST['transaccion'])          
 		pago.save()
 
 		pedido.pago_pedido = pago
@@ -173,9 +179,9 @@ from django.conf import settings
 def definir_pago(request):
 	valor = False
 	if request.POST:
-		if request.POST['direccion']:			
+		if request.POST['direccion']:           
 			try:
-				direccion = Direccion.objects.get(pk=request.POST['direccion']);						
+				direccion = Direccion.objects.get(pk=request.POST['direccion']);                        
 				if direccion.ubigeo.parent.name == 'Lima':
 					valor = True
 			except Direccion.DoesNotExist:
@@ -203,7 +209,13 @@ def getForm_mercado_pago(request):
 				},
 				'shipments':{
 					'cost':float(pedido.metodoenvio.precio),
-				}
+				},
+				'back_urls':{
+					'success':"%s/mercadopago_succes/%s/" %(settings.SITE_NAME,pedido),
+					'pending':"%s/mercadopago_pending/%s/" %(settings.SITE_NAME,pedido),
+					'failure':"%s/mercadopago_fail/%s/" %(settings.SITE_NAME,pedido),
+				},
+				'notification_url':"%s/mercadopago_ipn/" %(settings.SITE_NAME),
 			}
 			for linea in carro.lineas.all():
 				item = {
@@ -220,41 +232,42 @@ def getForm_mercado_pago(request):
 
 			return HttpResponse(json.dumps(preferenceResult, indent=4),content_type='application/json;charset=utf8')
 		else:
-			return HttpResponse(json.dumps({'error':'No Existe Carro'}, indent=4),content_type='application/json;charset=utf8')			
+			return HttpResponse(json.dumps({'error':'No Existe Carro'}, indent=4),content_type='application/json;charset=utf8')         
 	else:
 		return HttpResponse(json.dumps({'error':'Solicitud no Valida'}, indent=4),content_type='application/json;charset=utf8')
 
 
-#items=[]
-			#for linea in carro.lineas.all():
-				#item = {
-					#'title':linea.producto.full_name,
-					#'picture_url':linea.producto.get_thum(),
-					#'quantity':linea.cantidad,
-					#'currency_id':"PEN",
-					#"unit_price":float(linea.get_precio()),
-				#}
-				#items.append(item)
-			#preference = {}
-			#preference['items']=items
-#
-			#print json.dumps(preference)
-#
-			#preferenceResult = mp.create_preference(json.dumps(preference))
+def mercadopago_succes(request,pedido):
 
+	carro = Carro.objects.get(pedido__numero_pedido=pedido)
+	pago = Pago(cantidad = carro.total_carro(),
+						id_pago='',
+						descripcion='',
+						metodo_pago = '',
+						transaccion = '')
+	pago.save()
+	carro.estado = carro.ENVIADA
+	carro.save()
+	url = "%s/%s" %(settings.PAYPAL_URL_FRONT_RETURN,pedido)
+	return HttpResponseRedirect(url)
 
-#preference = {
-				#"items": [
-					#{
-						#"title": "Shingekui no ",
-						#'picture_url':'https://lovizdc.com/media/cache/38/42/384233ef2917e219c9fa7c7a109eacd6.jpg',
-						#"quantity": 2,
-						#"currency_id": "PEN",
-						#"unit_price": 40.20
-					#}
-				#],
-				#'payer':{
-					#'name':'Tu viejo Lopez',
-					#'email':'prienw@kmnvi.com',
-				#}
-			#}
+def mercadopago_pending(request,pedido):
+	url = "%s" %(settings.SITE_NAME)
+	return HttpResponseRedirect(url)
+
+def mercadopago_fail(request,pedido):
+	url = "%s" %(settings.SITE_NAME)
+	return HttpResponseRedirect(url)
+
+def mercadopago_ipn(request):
+	mp = mercadopago.MP(settings.CLIENT_ID, settings.CLIENT_SECRET)
+
+	paymentInfo = mp.get_payment_info(request.GET.get('id'))
+
+	print paymentInfo
+	
+	# Show payment information
+	if paymentInfo["status"] == 200:
+		return paymentInfo["response"]
+	else:
+		return None

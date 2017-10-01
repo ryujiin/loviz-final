@@ -19,7 +19,7 @@ from cmsweb.views import *
 from carro.views import LineasViewsets,CarroViewsets
 from cliente.views import salir,nuevo_usuario,ingresar,DireccionViewsets,ClienteViewSet,SuscritoViewset
 from comentario.views import ComentarioViewSet,ComentarioImagenViewSet
-from pago.views import paypal_paymet,get_stripe_key,definir_pago,stripe_paymet,retorn_paypal,get_pago_contraentrega,getForm_mercado_pago
+from pago.views import *
 from pedido.views import PedidoViewSet,MetodoEnvioViewSet,MetodoPagoViewSet,PedidoViewsApi
 from ubigeo.views import RegionViewset
 from utiles.views import ColorViewsets,TallasViewsets
@@ -72,6 +72,7 @@ urlpatterns = [
     url(r'^definir_pago/',definir_pago,name='definir_pago'),    
         #paypal
     url(r'^retorno_paypal/(?P<pedido>[-\w]+)/$',retorn_paypal,name='retorn_paypal'),    
+    url(r'^cancel_paypal/(?P<pedido>[-\w]+)/$',cancel_paypal,name='cancel_paypal'),    
     url(r'^pago/paypal/', paypal_paymet,name = 'pago_paypal'),    
     url(r'^hardcode/get/paypal/', include('paypal.standard.ipn.urls')),
         #stripe
@@ -79,6 +80,10 @@ urlpatterns = [
     url(r'^get_stripe_key/$',get_stripe_key,name='get_key'),    
         #mercado Pago
     url(r'^get_mercado_pago/', getForm_mercado_pago, name = 'mercado_pago'),
+    url(r'^mercadopago_succes/(?P<pedido>[-\w]+)/$', mercadopago_succes, name = 'mercado_pago_susses'),
+    url(r'^mercadopago_pending/(?P<pedido>[-\w]+)/$', mercadopago_pending, name = 'mercado_pago_pending'),
+    url(r'^mercadopago_fail/(?P<pedido>[-\w]+)/$', mercadopago_fail, name = 'mercado_pago_fail'),
+    url(r'^mercadopago_ipn/', mercadopago_ipn, name = 'mercado_pago_ipn'),
         #Contra Entrega
     url(r'^pago_contraentrega/',get_pago_contraentrega,name='pago_contraentrega'),    
     #Oficina
